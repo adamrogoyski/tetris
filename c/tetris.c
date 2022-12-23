@@ -469,7 +469,6 @@ int main(int argc, char** argv) {
   ctx.graphics.blocks[5] = ctx.graphics.block_purple;
   ctx.graphics.blocks[6] = ctx.graphics.block_red;
   ctx.graphics.blocks[7] = ctx.graphics.block_yellow;
-  CHECK_SDLP(ctx.graphics.gameover     = IMG_LoadTexture(renderer, "graphics/gameover.png"),     "IMG_LoadTexture", SDL_GetError);
   CHECK_SDLP(ctx.graphics.logo         = IMG_LoadTexture(renderer, "graphics/logo.png"),         "IMG_LoadTexture", SDL_GetError);
   CHECK_SDLP(ctx.graphics.wall         = IMG_LoadTexture(renderer, "graphics/wall.png"),         "IMG_LoadTexture", SDL_GetError);
   CHECK_SDLI(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096), "Mix_OpenAudio", Mix_GetError);
