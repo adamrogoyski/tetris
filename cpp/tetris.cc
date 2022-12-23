@@ -138,7 +138,6 @@ class GameContext {
     graphics_.blocks[5] = graphics_.block_purple;
     graphics_.blocks[6] = graphics_.block_red;
     graphics_.blocks[7] = graphics_.block_yellow;
-    CHECK_SDLP(graphics_.gameover     = IMG_LoadTexture(renderer_, "graphics/gameover.png"),     "IMG_LoadTexture", SDL_GetError);
     CHECK_SDLP(graphics_.logo         = IMG_LoadTexture(renderer_, "graphics/logo.png"),         "IMG_LoadTexture", SDL_GetError);
     CHECK_SDLP(graphics_.wall         = IMG_LoadTexture(renderer_, "graphics/wall.png"),         "IMG_LoadTexture", SDL_GetError);
     CHECK_SDLI(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096), "Mix_OpenAudio", Mix_GetError);
