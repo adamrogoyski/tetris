@@ -266,7 +266,7 @@ sub draw_status {
     Readonly::Scalar my $LEVEL_X => $WIDTH * $BLOCK_SIZE + 60;
     Readonly::Scalar my $LEVEL_Y => 180;
     $font_small->write_xy( $app_r, $LEVEL_X, $LEVEL_Y,
-        'Level: ' . $completed_lines / $LINES_PER_LEVEL );
+        'Level: ' . int( $completed_lines / $LINES_PER_LEVEL ) );
 
     # Draw the next tetromino piece.
     for my $i ( 0 .. $BLOCKS_PER_PIECE - 1 ) {
