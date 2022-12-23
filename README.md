@@ -2,7 +2,7 @@
 
 Multiple implementations of a simple Tetris game in many languages.
 
-![Tetris gameplay](https://github.com/adamrogoyski/tetris/blob/main/screenshots/play.jpg?raw=true)
+![Tetris gameplay](https://raw.githubusercontent.com/adamrogoyski/tetris/main/screenshots/play.png)
 
 Tetris is simple enough to write in 400-500 lines, yet encompasses many
 different elements of a program:
