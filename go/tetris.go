@@ -155,8 +155,6 @@ func (ctx *GameContext) Init() {
 	ctx.graphics.blocks[5] = ctx.graphics.block_purple
 	ctx.graphics.blocks[6] = ctx.graphics.block_red
 	ctx.graphics.blocks[7] = ctx.graphics.block_yellow
-	ctx.graphics.gameover, err = img.LoadTexture(ctx.renderer, "graphics/gameover.png")
-	CHECK(err)
 	ctx.graphics.logo, err = img.LoadTexture(ctx.renderer, "graphics/logo.png")
 	CHECK(err)
 	ctx.graphics.wall, err = img.LoadTexture(ctx.renderer, "graphics/wall.png")
