@@ -15,7 +15,6 @@
 
 (define logo         (load-image "graphics/logo.png"))
 (define wall         (load-image "graphics/wall.png"))
-(define gameover-msg (load-image "graphics/gameover.png"))
 (define block-black  (load-image "graphics/block_black.png"))
 (define block-blue   (load-image "graphics/block_blue.png"))
 (define block-cyan   (load-image "graphics/block_cyan.png"))
@@ -38,6 +37,9 @@
 (define music-loop (make-source #:audio song-korobeiniki #:loop? #t))
 (set-source-audio! music-loop song-korobeiniki)
 (source-play music-loop)
+
+(define font-small (load-font "fonts/Montserrat-Regular.ttf" 16))
+(define color-red (make-color 1.0 0.0 0.0 1.0))
 
 ; One of ('play 'pause 'gameover).
 (define game-state 'play)
@@ -292,8 +294,8 @@
   (let ((status-x (+ (* board.block.width square-size) 60))
         (top-y (* board.block.height square-size)))
     (draw-sprite logo (vec2 status-x (- top-y 64)))
-    (draw-text (string-append "Lines: " (number->string completed-lines)) (vec2 status-x (- top-y 100)))
-    (draw-text (string-append "Level: " (number->string (truncate (/ completed-lines 3)))) (vec2 status-x (- top-y 150)))
+    (draw-text (string-append "Lines: " (number->string completed-lines)) (vec2 status-x (- top-y 100)) #:font font-small #:color color-red)
+    (draw-text (string-append "Level: " (number->string (truncate (/ completed-lines 3)))) (vec2 status-x (- top-y 150)) #:font font-small #:color color-red)
     ; Draw the next piece on deck to be played as part of the status area.
     (let ((coords (copy-tree (list-ref starting-positions next-piece-type)))
           (block (list-ref block-colors next-piece-type))
@@ -306,7 +308,10 @@
                                              (- (* (- board.block.height y 1) square-size) 300)))))
                 coords)))
   (if (eq? game-state 'gameover)
-    (draw-sprite gameover-msg (vec2 25 (- (* board.block.height square-size) 75 250))))) ; Image has height of 75 pixels.
+    (let ((x 25)
+          (y (- (* board.block.height square-size) 75 250)))
+      (draw-9-patch block-black (make-rect x (- y 60) (+ (* board.block.width square-size) 180) 150))
+      (draw-text "The only winning move is not to play" (vec2 x y) #:font font-small #:color color-red #:scale (vec2 1.15 3.0)))))
 
 ; Move a piece from (x,y) -> (x+dx, y+dy). A move is placing black blocks over the current piece and adding a new piece
 ; in the updated coordinates.
