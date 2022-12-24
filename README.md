@@ -15,6 +15,7 @@ different elements of a program:
 * Command-line text output
 * Multi-dimensional data structures
 * Time and frame handling
+* State that needs to be accessed and updated
 
 The following languages are implemented:
 
@@ -42,3 +43,6 @@ three Nintendo Gameboy Tetris songs.
 
 The graphics are 7 32x32-pixel blocks created with GNU Gimp, a wall image created with GNU Gimp,
 and the TETЯIS logo due to the free font used not having the Я character.
+
+The game is intentionally harder than other Tetris implementations. The level increases every 3
+lines instead of 10. Lines are tracked, but there's no score. Embrace the inevitability of losing.
