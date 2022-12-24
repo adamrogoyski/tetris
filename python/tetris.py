@@ -246,8 +246,8 @@ def CheckGameOver(c):
 
 
 def DrawBoard(c: GameContext) -> None:
+  # Clear the screen.
   c.screen.fill((0, 0, 0))
-  c.screen.blit(c.block_blue, (random.randint(0, 100), random.randint(0, 100)))
 
   # The right-side board wall is 50x640 pixels and needs to extend the whole screen.
   for x in range(math.ceil(c.height*c.block_size / 640)):
