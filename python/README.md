@@ -1,7 +1,3 @@
 # Python3 Tetris
 
-Uses the pygame library.
-
-TODO:
-
-* Use the same font as the other implementations.
+Uses the [pygame](https://www.pygame.org/docs/) library.
