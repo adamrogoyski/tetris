@@ -444,7 +444,6 @@ sub drop_check {
     return 0;
 }
 
-#SDL::Events::enable_key_repeat(SDL_DEFAULT_REPEAT_DELAY , SDL_DEFAULT_REPEAT_INTERVAL);
 SDL::Events::enable_key_repeat( $KEY_REPEAT_DELAY, $KEY_REPEAT_INTERVAL );
 
 my $event           = SDL::Event->new();
@@ -457,7 +456,7 @@ my $drop_ticks      = 0;
 add_board_piece( \$current_piece, \$next_piece );
 $app->flip();
 draw_screen( $app, $state, $completed_lines );
-$snd->play($SONG_BWV814MENUET);
+$snd->play($SONG_KOROBEINIKI);
 
 print <<"EOF" or croak 'print';
 TETЯIS:

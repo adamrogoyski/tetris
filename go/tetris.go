@@ -169,7 +169,7 @@ func (ctx *GameContext) Init() {
 	CHECK(err)
 	ctx.music.gameover, err = mix.LoadWAV("sound/gameover.wav")
 	CHECK(err)
-	_, err = ctx.music.song_bwv814menuet.Play(0, -1)
+	_, err = ctx.music.song_korobeiniki.Play(0, -1)
 	CHECK(err)
 
 	CHECK(ttf.Init())

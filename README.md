@@ -26,3 +26,19 @@ The following languages are implemented:
 * Scheme (guile using Chickadee (SDL based))
 
 I intend to write more language implementations.
+
+The implementations are meant to function almost identically, though small
+differences exist. Some differences are:
+
+* Keyboard handling and repeated key presses are close but not identical.
+* The timing of the frame rate and piece-drop rate is within a few percent the same.
+* The C, C++, and Go versions use GPU textures, so the board can be easily scaled.
+    * The Python and Scheme versions use bitmaps and are at a fixed size.
+* The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
+* The Scheme version uses lists rather than vectors for everything.
+
+The music is performed by me on guitar. They should be close to note-for-note identical to the
+three Nintendo Gameboy Tetris songs.
+
+The graphics are 7 32x32-pixel blocks created with GNU Gimp, a wall image created with GNU Gimp,
+and the TETЯIS logo due to the free font used not having the Я character.

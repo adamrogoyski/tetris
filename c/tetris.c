@@ -476,7 +476,7 @@ int main(int argc, char** argv) {
   CHECK_SDLP(ctx.music.song_bwv814menuet = Mix_LoadWAV("sound/bwv814menuet.wav"), "Mix_LoadWAV", Mix_GetError);
   CHECK_SDLP(ctx.music.song_russiansong  = Mix_LoadWAV("sound/russiansong.wav"),  "Mix_LoadWAV", Mix_GetError);
   CHECK_SDLP(ctx.music.gameover          = Mix_LoadWAV("sound/gameover.wav"),     "Mix_LoadWAV", Mix_GetError);
-  CHECK_SDLI(Mix_PlayChannel(0, ctx.music.song_bwv814menuet, -1), "Mix_PlayChannel", SDL_GetError);
+  CHECK_SDLI(Mix_PlayChannel(0, ctx.music.song_korobeiniki, -1), "Mix_PlayChannel", SDL_GetError);
 
   CHECK_SDLI(TTF_Init(),"TTF_Init", TTF_GetError);
   CHECK_SDLP(ctx.font = TTF_OpenFont("fonts/Montserrat-Regular.ttf", 48), "TTF_OpenFont", TTF_GetError);

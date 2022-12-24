@@ -149,7 +149,7 @@ class GameContext {
     music_.songs[1] = music_.song_bwv814menuet;
     music_.songs[2] = music_.song_russiansong;
     music_.songs[3] = music_.gameover;
-    CHECK_SDLI(Mix_PlayChannel(0, music_.song_bwv814menuet, -1), "Mix_PlayChannel", SDL_GetError);
+    CHECK_SDLI(Mix_PlayChannel(0, music_.song_korobeiniki, -1), "Mix_PlayChannel", SDL_GetError);
 
     CHECK_SDLI(TTF_Init(),"TTF_Init", TTF_GetError);
     CHECK_SDLP(font_ = TTF_OpenFont("fonts/Montserrat-Regular.ttf", 48), "TTF_OpenFont", TTF_GetError);
