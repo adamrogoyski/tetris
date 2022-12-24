@@ -47,7 +47,7 @@ and the TETЯIS logo due to the free font used not having the Я character.
 The game is intentionally harder than other Tetris implementations. The level increases every 3
 lines instead of 10. Lines are tracked, but there's no score. Embrace the inevitability of losing.
 
-## Code Walkthrough
+## Code Walk through
 
 Each implementation is similar in approach, with various changes for the style
 or convenience of the language.
@@ -77,7 +77,7 @@ The game intends to stick to 60 frames-per-second (FPS), with counters (ticks) c
 
 ### Screen Updates
 
-Updates to the screen use double buffering: Updates are written to the framebuffer and then flipped
+Updates to the screen use double buffering: Updates are written to the frame-buffer and then flipped
 with the current buffer to update the screen in one go per frame.
 
 The placement on the screen is done relative to the block size. The PNG images of the 7 colored blocks
@@ -102,7 +102,7 @@ Full lines being cleared is the goal of Tetris. After auto-advancing a piece col
 lines are checked for fullness and removed -- up to 4 lines possibly cleared at once.
 
 This is the area where each implementation is likely to be the most different, based on what feels
-natural for the language and datas structure used:
+natural for the language and data structure used:
 
 * C/C++/Go: a cleared row pointer is set aside, all other row pointers moved down one, and the cleared row placed at the top.
 * Python: rows of the board are deleted and new all-zero rows are added to the top.
@@ -111,7 +111,7 @@ natural for the language and datas structure used:
 Every 3 lines cleared ups the level of the game, which is controlled by waiting fewer game ticks
 (frames) before auto-advancing the piece down.
 
-### Placing a new piece.
+### Placing a new piece
 
 A new piece is always placed at the top of the board, centered. A table of starting positions gives
 each piece's coordinates relative to the top center of the screen. The same table is used to place
@@ -134,7 +134,7 @@ next location would be when rotated. Using this table of rotations is the approa
 There is more to learn about each programming language dealing with creating and accessing
 this table of rotations than to write the arithmetic function.
 
-Rotation of the 2x2 square tetromino is a no-op. Simiarly, other pieces have rotational symmetries.
+Rotation of the 2x2 square tetromino is a no-op. Similarly, other pieces have rotational symmetries.
 Despite this, all rotations of each piece in each orientation are provided.
 
 ### Collision Detection
