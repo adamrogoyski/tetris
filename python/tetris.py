@@ -68,7 +68,7 @@ class GameContext(object):
     self.block_tick = 1
     self.down_tick = 1
 
-    self.regular_font = pygame.font.Font(None, 80)
+    self.regular_font = pygame.font.Font('fonts/Montserrat-Regular.ttf', 80)
     lose_text = 'The only winning move is not to play'
     lose_img = self.regular_font.render(lose_text, 0, (255, 0, 0), (0, 0, 0)).convert()
     self.lose_img = pygame.transform.scale(lose_img, (math.floor((width*self.block_size + 180) * 0.90),
