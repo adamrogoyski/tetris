@@ -192,7 +192,7 @@ end;
 
 procedure Init();
 var
-  x, y: integer;
+  x, y, level_adjust: integer;
 begin
   if SDL_Init(SDL_INIT_AUDIO or SDL_INIT_EVENTS or SDL_INIT_TIMER or SDL_INIT_VIDEO) < 0 then Halt;
   if SDL_CreateWindowAndRenderer(width_px, height_px, SDL_WINDOW_SHOWN, @window, @renderer) <> 0 then Halt;
@@ -235,6 +235,8 @@ begin
   ctx.next_piece := Random(7) + 1;
   ctx.current_orientation := 0;
   ctx.completed_lines := 0;
+  if argc > 1 then
+    ctx.completed_lines := StrToInt(argv[1])*3;
   for y := 0 to height-1 do
     for x := 0 to width-1 do
       ctx.board[y][x] := 0
@@ -548,7 +550,7 @@ begin
   Writeln('');
   Writeln('TETЯIS:');
   Writeln;
-  Writeln('  usage: ./tetris.py [level 1-15]');
+  Writeln('  usage: ', argv[0], ' [level 1-15]');
   Writeln;
   Writeln('  F1  - Korobeiniki (gameboy song A).');
   Writeln('  F2  - Bach french suite No 3 in b minor BWV 814 Menuet (gameboy song B).');
