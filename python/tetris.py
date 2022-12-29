@@ -318,7 +318,7 @@ TETЯIS:
   try:
     while True:
       for event in pygame.event.get():
-        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key in (pygame.K_ESCAPE, pygame.K_q)):
           raise ExitGame
 
       # Auto-move block on timer. Check for new pieces and game over.
