@@ -105,7 +105,7 @@ lines are checked for fullness and removed -- up to 4 lines possibly cleared at 
 This is the area where each implementation is likely to be the most different, based on what feels
 natural for the language and data structure used:
 
-* C/C++/Go: a cleared row pointer is set aside, all other row pointers moved down one, and the cleared row placed at the top.
+* C/C++/Go/Pascal/Perl: a cleared row pointer is set aside, all other row pointers moved down one, and the cleared row placed at the top.
 * Python: rows of the board are deleted and new all-zero rows are added to the top.
 * Scheme: The create-board initialization is reused, passing a partial board filtering full lines.
 
