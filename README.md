@@ -22,6 +22,7 @@ The following languages are implemented:
 * C (SDL)
 * C++ (SDL)
 * Go (SDL)
+* Pascal (SDL)
 * Perl (SDL, SDLx)
 * Python3 (Pygame using SDL)
 * Scheme (guile using Chickadee (SDL based))
@@ -33,8 +34,8 @@ differences exist. Some differences are:
 
 * Keyboard handling and repeated key presses are close but not identical.
 * The timing of the frame rate and piece-drop rate is within a few percent the same.
-* The C, C++, and Go versions use GPU textures, so the board can be easily scaled.
-    * The Python and Scheme versions use bitmaps and are at a fixed size.
+* The C, C++, Go, and Pascal versions use GPU textures, so the board can be easily scaled.
+    * The Perl, Python, and Scheme versions use bitmaps and are at a fixed size.
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
 
