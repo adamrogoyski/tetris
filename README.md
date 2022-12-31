@@ -71,7 +71,7 @@ The game loop loops until reaching the game-over condition and has three functio
 * Track the passage of time in terms of screen-update frames and various frame-counting ticks
 * Auto-advance blocks downward at a set rate based on the number of lines completed.
 
-When auto-advance collides, line clearing is is performed, and the next piece is started unless
+When auto-advance collides, line clearing is performed, and the next piece is started unless
 the game is over.
 
 The game intends to stick to 60 frames-per-second (FPS), with counters (ticks) counting frames.
@@ -143,7 +143,7 @@ Despite this, all rotations of each piece in each orientation are provided.
 A piece has collided with something if it tries to go beyond the 4 walls or go where another
 block already exists. Colliding with the top wall is possible when rotating a piece after
 placement due to placing the piece as high as is possible. Some implementations of Tetris
-place the piece low enough that a rotation is possible without exceed the top of the board.
+place the piece low enough that a rotation is possible without exceeding the top of the board.
 
 ### Game Over Condition
 
