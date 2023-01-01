@@ -16,12 +16,14 @@ different elements of a program:
 * Multi-dimensional data structures
 * Time and frame handling
 * State that needs to be accessed and updated
+* Command-line arguments
 
 The following languages are implemented:
 
 * C (SDL)
 * C++ (SDL)
 * Go (SDL)
+* Javascript (NodeJS using SDL and Canvas)
 * Pascal (SDL)
 * Perl (SDL, SDLx)
 * Python3 (Pygame using SDL)
@@ -35,9 +37,10 @@ differences exist. Some differences are:
 * Keyboard handling and repeated key presses are close but not identical.
 * The timing of the frame rate and piece-drop rate is within a few percent the same.
 * The C, C++, Go, and Pascal versions use GPU textures, so the board can be easily scaled.
-    * The Perl, Python, and Scheme versions use bitmaps and are at a fixed size.
+    * The Javascript, Perl, Python, and Scheme versions use bitmaps and are at a fixed size.
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
+* The Javascript version is written with asynchronous callbacks.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
