@@ -24,6 +24,8 @@ The following languages are implemented:
 * C++ (SDL)
 * Go (SDL)
 * Javascript (NodeJS using SDL and Canvas)
+    * NodeJS using SDL and Canvas
+    * Web browser with Canvas
 * Pascal (SDL)
 * Perl (SDL, SDLx)
 * Python3 (Pygame using SDL)
@@ -40,7 +42,7 @@ differences exist. Some differences are:
     * The Javascript, Perl, Python, and Scheme versions use bitmaps and are at a fixed size.
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
-* The Javascript version is written with asynchronous callbacks.
+* The Javascript versions are written with asynchronous callbacks.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
