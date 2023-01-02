@@ -1,0 +1,457 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="shortcut icon" href="http://www.rogoyski.com/favicon.ico">
+<link rel="icon" href="http://www.rogoyski.com/favicon.ico" type="image/ico">
+
+<title>
+Tetris
+</title>
+
+<style>
+  .game {
+     width: 100%;
+     text-align: center;
+     color: white;
+  }
+  .game.canvas {
+    display: inline;
+  }
+  table {
+    color: red;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  table.th {
+  }
+</style>
+</head>
+
+<body bgcolor=black>
+<div class="game">
+  <canvas id="game_canvas" width="562" height="640" muted="muted"></canvas>
+  <p>
+<table>
+  <tr><th colspan="2">TET&#7449;IS</th></tr>
+  <tr><td>1</td><td>Korobeiniki (gameboy song A)</td></tr>
+  <tr><td>2</td><td>Bach french suite No 3 in b minor BWV 814 Menuet (gameboy song B)</td></tr>
+  <tr><td>3</td><td>Russian song (gameboy song C)</td></tr>
+  <tr><td>4</td><td>Silence</td></tr>
+  <tr><td>p</td><td>Pausee</td></tr>
+  <tr></tr>
+  <tr><td>Up</td><td>Rotate</td></tr>
+  <tr><td>Down</td><td>Lower</td></tr>
+  <tr><td>Space</td><td>Drop completely</td></tr>
+</table>
+</div>
+
+<script>
+const WIDTH = 10;
+const HEIGHT = 20;
+const BLOCK_SIZE = 32;
+const STRIDE = WIDTH * BLOCK_SIZE * 4;
+const WIDTH_PX = (WIDTH + 6) * BLOCK_SIZE + 50;
+const HEIGHT_PX = HEIGHT * BLOCK_SIZE;
+const FRAME_RATE_MS = 1000 / 60;
+const IN_PLAY = 1;
+const PAUSE = 2;
+const GAMEOVER = 3;
+const NUM_TETROMINOS = 7;
+ctx = {
+  'screen_canvas': document.getElementById('game_canvas')
+};
+ctx.sctx = ctx.screen_canvas.getContext('2d');
+
+// Starting position of each type of tetromino. Each tetromino is 4 (x,y) coordinates.
+const starting_positions = [
+  [[-1,0], [-1,1], [0,1], [1,1]],  // Leftward L piece.
+  [[-1,1], [0,1],  [0,0], [1,0]],  // Rightward Z piece.
+  [[-2,0], [-1,0], [0,0], [1,0]],  // Long straight piece.
+  [[-1,1], [0,1],  [0,0], [1,1]],  // Bump in middle piece.
+  [[-1,1], [0,1],  [1,1], [1,0]],  // L piece.
+  [[-1,0], [0,0],  [0,1], [1,1]],  // Z piece.
+  [[-1,0], [-1,1], [0,0], [0,1]],  // Square piece.
+];
+
+// Array of rotations for each tetromino to move from orientation x -> (x + 1) % 4.
+// Each rotation is an array of 4 rotations -- one for each orientation of a tetromino.
+// For each rotation, there is an array of 4 (int x, int y) coordinate diffs for each block of the tetromino.
+// The coordinate diffs map each block to its new location.
+// Thus: [block][orientation][component][x|y] to map the 4 components of each block in each orientation.
+const rotations = [
+  // Leftward L piece.
+  [[[0,2],  [1,1],   [0,0], [-1,-1]],
+   [[2,0],  [1,-1],  [0,0], [-1,1]],
+   [[0,-2], [-1,-1], [0,0], [1,1]],
+   [[-2,0], [-1,1],  [0,0], [1,-1]]],
+  // Rightward Z piece. Orientation symmetry: 0==2 and 1==3.
+  [[[1,0],  [0,1],  [-1,0], [-2,1]],
+   [[-1,0], [0,-1], [1,0],  [2,-1]],
+   [[1,0],  [0,1],  [-1,0], [-2,1]],
+   [[-1,0], [0,-1], [1,0],  [2,-1]]],
+  // Long straight piece. Orientation symmetry: 0==2 and 1==3.
+  [[[2,-2], [1,-1], [0,0], [-1,1]],
+   [[-2,2], [-1,1], [0,0], [1,-1]],
+   [[2,-2], [1,-1], [0,0], [-1,1]],
+   [[-2,2], [-1,1], [0,0], [1,-1]]],
+  // Bump in middle piece.
+  [[[1,1],   [0,0], [-1,1],  [-1,-1]],
+   [[1,-1],  [0,0], [1,1],   [-1,1]],
+   [[-1,-1], [0,0], [1,-1],  [1,1]],
+   [[-1,1],  [0,0], [-1,-1], [1,-1]]],
+  // L Piece.
+  [[[1,1],   [0,0], [-1,-1], [-2,0]],
+   [[1,-1],  [0,0], [-1,1],  [0,2]],
+   [[-1,-1], [0,0], [1,1],   [2,0]],
+   [[-1,1],  [0,0], [1,-1],  [0,-2]]],
+  // Z piece. Orientation symmetry: 0==2 and 1==3.
+  [[[1,0],  [0,1],  [-1,0], [-2,1]],
+   [[-1,0], [0,-1], [1,0],  [2,-1]],
+   [[1,0],  [0,1],  [-1,0], [-2,1]],
+   [[-1,0], [0,-1], [1,0],  [2,-1]]],
+  // Square piece. Orientation symmetry: 0==1==2==3.
+  [[[0,0], [0,0], [0,0], [0,0]],
+   [[0,0], [0,0], [0,0], [0,0]],
+   [[0,0], [0,0], [0,0], [0,0]],
+   [[0,0], [0,0], [0,0], [0,0]]]
+];
+
+function AddBoardPiece() {
+  const center = Math.floor(WIDTH / 2);
+  for (i = 0; i < 4; ++i) {
+    const x = center + starting_positions[ctx.current_piece-1][i][0];
+    const y = starting_positions[ctx.current_piece-1][i][1];
+    if (ctx.board[y][x]) {
+      return true;
+    }
+  }
+  for (i = 0; i < 4; ++i) {
+    const x = center + starting_positions[ctx.current_piece-1][i][0];
+    const y = starting_positions[ctx.current_piece-1][i][1];
+    ctx.board[y][x] = ctx.current_piece;
+    ctx.current_coords[i] = [x, y];
+  }
+  return false;
+}
+
+function MoveTetromino(dx, dy) {
+  // Clear the board where the piece currently is.
+  for (i = 0; i < 4; ++i) {
+    const x = ctx.current_coords[i][0];
+    const y = ctx.current_coords[i][1];
+    ctx.board[y][x] = 0;
+  }
+  // Update the current piece's coordinates and fill the board in the new coordinates.
+  for (i = 0; i < 4; ++i) {
+    ctx.current_coords[i][0] += dx;
+    ctx.current_coords[i][1] += dy;
+    ctx.board[ctx.current_coords[i][1]][ctx.current_coords[i][0]] = ctx.current_piece;
+  }
+}
+
+function SetCoords(board, coords, piece) {
+  for (i = 0; i < 4; ++i) {
+    board[coords[i][1]][coords[i][0]] = piece;
+  }
+}
+
+function Rotate() {
+  new_coords = [[], [], [], []];
+  const rotation = rotations[ctx.current_piece-1][ctx.current_orientation];
+  for (i = 0; i < 4; ++i) {
+    new_coords[i][0] = ctx.current_coords[i][0] + rotation[i][0];
+    new_coords[i][1] = ctx.current_coords[i][1] + rotation[i][1];
+  }
+
+  // Clear the board where the piece currently is to not detect self collision.
+  SetCoords(ctx.board, ctx.current_coords, 0);
+  for (i = 0; i < 4; ++i) {
+    const x = new_coords[i][0];
+    const y = new_coords[i][1];
+    // Collision is hitting the left wall, right wall, top, bottom, or a non-black block.
+    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT || ctx.board[y][x]) {
+      // Restore the current piece.
+      SetCoords(ctx.board, ctx.current_coords, ctx.current_piece);
+      return false;
+    }
+  }
+
+  for (i = 0; i < 4; ++i) {
+    ctx.current_coords[i][0] = new_coords[i][0];
+    ctx.current_coords[i][1] = new_coords[i][1];
+    ctx.board[new_coords[i][1]][new_coords[i][0]] = ctx.current_piece;
+  }
+  ctx.current_orientation = (ctx.current_orientation + 1) % 4;
+  return true;
+}
+
+function CollisionDetected(dx, dy) {
+  var collision = false;
+  // Clear the board where the piece currently is to not detect self collision.
+  SetCoords(ctx.board, ctx.current_coords, 0);
+  for (i = 0; i < 4; ++i) {
+    const x = ctx.current_coords[i][0];
+    const y = ctx.current_coords[i][1];
+    // Collision is hitting the left wall, right wall, bottom, or a non-black block.
+    // Since this collision detection is only for movement, check the top (y < 0) is not needed.
+    if ((x + dx) < 0 || (x + dx) >= WIDTH || (y + dy) >= HEIGHT || ctx.board[y+dy][x+dx]) {
+      collision = true;
+      break;
+    }
+  }
+  // Restore the current piece.
+  SetCoords(ctx.board, ctx.current_coords, ctx.current_piece);
+  return collision;
+}
+
+// Clear completed (filled) rows.
+// Start from the bottom of the board, moving all rows down to fill in a completed row, with
+// the completed row cleared and placed at the top.
+function ClearBoard() {
+  var rows_deleted = 0;
+  for (row = HEIGHT - 1; row >= rows_deleted;) {
+    var has_hole = false;
+    for (x = 0; x < WIDTH && !has_hole; ++x) {
+      has_hole = !ctx.board[row][x];
+    }
+    if (!has_hole) {
+      var deleted_row = ctx.board[row];
+      for (y = row; y > rows_deleted; --y) {
+        ctx.board[y] = ctx.board[y-1];
+      }
+      ctx.board[rows_deleted] = deleted_row;
+      for (i = 0; i < WIDTH; ++i) {
+        ctx.board[rows_deleted][i] = 0;
+      }
+      ++rows_deleted;
+    } else {
+      --row;
+    }
+  }
+  ctx.completed_lines += rows_deleted;
+}
+
+async function LoadPNG(name, w, h) {
+  return new Promise(resolve => {
+    ctx[name] = new Image(w, h);
+    ctx[name].src = 'graphics/' + name + '.png';
+    ctx[name].onload = function() {
+      resolve();
+    };
+  });
+}
+
+async function LoadWAV(name, loop) {
+  ctx['sound_' + name] = new Audio('sound/' + name + '.wav');
+  ctx['sound_' + name].loop = loop;
+}
+
+async function Init() {
+  await LoadPNG('block_black', BLOCK_SIZE, BLOCK_SIZE);
+  await LoadPNG('block_blue', BLOCK_SIZE, BLOCK_SIZE);
+  await LoadPNG('block_cyan', BLOCK_SIZE, BLOCK_SIZE);
+  await LoadPNG('block_green', BLOCK_SIZE, BLOCK_SIZE);
+  await LoadPNG('block_orange', BLOCK_SIZE, BLOCK_SIZE);
+  await LoadPNG('block_purple', BLOCK_SIZE, BLOCK_SIZE);
+  await LoadPNG('block_red', BLOCK_SIZE, BLOCK_SIZE);
+  await LoadPNG('block_yellow', BLOCK_SIZE, BLOCK_SIZE);
+  ctx.blocks = [ctx.block_black, ctx.block_blue, ctx.block_cyan, ctx.block_green,
+                        ctx.block_orange, ctx.block_purple, ctx.block_red, ctx.block_yellow];
+  await LoadPNG('logo', 94, 44);
+  await LoadPNG('wall', 50, 640);
+
+  await LoadWAV('bwv814menuet', true);
+  await LoadWAV('korobeiniki', true);
+  await LoadWAV('russiansong', true);
+  await LoadWAV('gameover', false);
+
+  ctx.board = new Array(HEIGHT);
+  for (y = 0; y < HEIGHT; ++y) {
+    ctx.board[y] = new Array(WIDTH);
+    for (x = 0; x < WIDTH; ++x) {
+      ctx.board[y][x] = 0;
+    }
+  }
+
+  ctx.current_piece = Math.floor(Math.random() * 7) + 1;
+  ctx.current_orientation = 0;
+  ctx.next_piece = Math.floor(Math.random() * 7) + 1;
+  ctx.completed_lines = 0;
+  ctx.current_coords = [[], [], [], []];
+  ctx.game_ticks = 0;
+  ctx.drop_ticks = 0;
+  ctx.last_frame_ms = Date.now();
+  ctx.status = IN_PLAY;
+  ctx.first_press = true;
+}
+
+function DrawStatus() {
+  // Wall extends from top to bottom, separating the board from the status area.
+  ctx.sctx.drawImage(ctx.wall, WIDTH*BLOCK_SIZE, 0);
+
+  // The logo sits at the top right of the screen right of the wall.
+  ctx.sctx.drawImage(ctx.logo, WIDTH*BLOCK_SIZE + 60, 20);
+
+
+  // Write the number of completed lines.
+  ctx.sctx.font = "24px serif";
+  ctx.sctx.fillStyle = 'red';
+  ctx.sctx.fillText("Lines: " + ctx.completed_lines.toString(), WIDTH*BLOCK_SIZE + 60, 120);
+
+ // Write the current game level.
+  ctx.sctx.fillText("Level: " + Math.floor(ctx.completed_lines / 3).toString(), WIDTH*BLOCK_SIZE + 60, 180);
+
+  // Draw the next tetromino piece.
+  for (i = 0; i < 4; ++i) {
+    const x = (starting_positions[ctx.next_piece-1][i][0])*BLOCK_SIZE + WIDTH*BLOCK_SIZE + 4*BLOCK_SIZE;
+    const y = starting_positions[ctx.next_piece-1][i][1]*BLOCK_SIZE + Math.max(4, HEIGHT/2 -1)*BLOCK_SIZE;
+    ctx.sctx.drawImage(ctx.blocks[ctx.next_piece], x, y);
+  }
+}
+
+function DrawScreen() {
+  // Clear the screen black.
+  ctx.sctx.fillStyle = 'black';
+  ctx.sctx.fillRect(0, 0, WIDTH_PX, HEIGHT_PX);
+
+  // Draw the playing board.
+  for (i = 0; i < WIDTH; ++i) {
+    for (j = 0; j < HEIGHT; ++j) {
+      // ctx.sctx.drawImage(ctx.blocks[Math.floor(Math.random() * 7) + 1], i*BLOCK_SIZE, j*BLOCK_SIZE);
+      ctx.sctx.drawImage(ctx.blocks[ctx.board[j][i]], i*BLOCK_SIZE, j*BLOCK_SIZE);
+    }
+  }
+
+  DrawStatus();
+}
+
+function GameTick() {
+  if (ctx.status == GAMEOVER) {
+    // Clear a rectangle for the game-over message and write the message.
+    ctx.sctx.fillStyle = 'black';
+    ctx.sctx.fillRect(0, Math.floor(HEIGHT_PX*0.4375), WIDTH_PX, Math.floor(HEIGHT_PX*0.125));
+    ctx.sctx.fillStyle = 'red';
+    ctx.sctx.font = "28px serif";
+    ctx.sctx.fillText('The only winning move is not to play', WIDTH_PX*0.05, Math.floor(HEIGHT_PX*0.51));
+    ctx.music.pause();
+    ctx.sound_gameover.play();
+
+    document.removeEventListener('keydown', ctx.keyhandler);
+    return;
+  }
+
+  changed = false;
+  if (ctx.status == IN_PLAY) {
+    if (ctx.game_ticks >= ctx.drop_ticks + Math.max(15 - ctx.completed_lines / 3, 1)) {
+      changed = true;
+      ctx.drop_ticks = ctx.game_ticks;
+      if (!CollisionDetected(0, 1)) {
+        MoveTetromino(0, 1);
+      } else {
+        ClearBoard(ctx);
+        ctx.current_orientation = 0;
+        ctx.current_piece = ctx.next_piece;
+        ctx.next_piece = Math.floor(Math.random() * NUM_TETROMINOS) + 1;
+        if (AddBoardPiece()) {
+          ctx.status = GAMEOVER;
+        }
+      }
+    }
+  }
+  if (changed) {
+    DrawScreen(ctx.screen_canvas, ctx.sctx, ctx.window);
+  }
+
+  const now_ms = Date.now();
+  if ((now_ms - ctx.last_frame_ms) >= FRAME_RATE_MS) {
+    ctx.game_ticks++;
+    ctx.last_frame_ms = now_ms;
+  }
+
+  setTimeout(GameTick, FRAME_RATE_MS);
+}
+
+async function Game() {
+  await Init();
+  AddBoardPiece();
+  DrawScreen();
+
+  ctx.keyhandler = function(e) {
+    switch(e.key) {
+      case 'p':
+        if (ctx.status == IN_PLAY) { ctx.status = PAUSE; } else {ctx.status = IN_PLAY; }
+        break;
+      case '1':
+        ctx.music.pause();
+        ctx.music = ctx.sound_bwv814menuet;
+        ctx.music.currentTime = 0;
+        ctx.music.play();
+        break;
+      case '2':
+        ctx.music.pause();
+        ctx.music = ctx.sound_korobeiniki;
+        ctx.music.currentTime = 0;
+        ctx.music.play();
+        break;
+      case '3':
+        ctx.music.pause();
+        ctx.music = ctx.sound_russiansong;
+        ctx.music.currentTime = 0;
+        ctx.music.play();
+        break;
+      case '4':
+        ctx.music.pause();
+        break;
+    }
+    if (ctx.status == IN_PLAY) {
+      // Music cannot auto-play in most browsers until the user interacts with the page.
+      if (ctx.first_press) {
+        ctx.first_press = false;
+        ctx.music = ctx.sound_korobeiniki;
+        ctx.music.play();
+      }
+      var changed = false;
+      switch(e.key) {
+        case 'ArrowLeft':
+          if (!CollisionDetected(-1, 0)) {
+            changed = true;
+            MoveTetromino(-1, 0);
+          }
+          break;
+        case 'ArrowRight':
+          if (!CollisionDetected(1, 0)) {
+            changed = true;
+            MoveTetromino(1, 0);
+          }
+          break;
+        case 'ArrowDown':
+          if (!CollisionDetected(0, 1)) {
+            changed = true;
+            MoveTetromino(0, 1);
+          }
+          break;
+        case ' ':
+          while (!CollisionDetected(0, 1)) {
+            changed = true;
+            MoveTetromino(0, 1);
+          }
+          break;
+        case 'ArrowUp':
+          changed = Rotate();
+          break;
+      }
+      if (changed) {
+        DrawScreen();
+      }
+    }
+  };
+  document.addEventListener('keydown', ctx.keyhandler);
+  setTimeout(GameTick, FRAME_RATE_MS);
+}
+
+Game();
+
+</script>
+
+</body>
+</html>
