@@ -23,7 +23,7 @@ The following languages are implemented:
 * C (SDL)
 * C++ (SDL)
 * Go (SDL)
-* Javascript (NodeJS using SDL and Canvas)
+* Javascript
     * NodeJS using SDL and Canvas
     * Web browser with Canvas ([try it](https://www.rogoyski.com/adam/programs/tetris-web/))
 * Pascal (SDL)
