@@ -25,7 +25,7 @@ The following languages are implemented:
 * Go (SDL)
 * Javascript (NodeJS using SDL and Canvas)
     * NodeJS using SDL and Canvas
-    * Web browser with Canvas
+    * Web browser with Canvas ([try it](https://www.rogoyski.com/adam/programs/tetris-web/))
 * Pascal (SDL)
 * Perl (SDL, SDLx)
 * Python3 (Pygame using SDL)
