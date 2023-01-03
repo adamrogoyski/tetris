@@ -17,6 +17,11 @@ Tetris
   .game.canvas {
     display: inline;
   }
+  button {
+    background-color: red;
+    font-size: 36px;
+    width: 25%;
+  }
   table {
     color: red;
     margin-left: auto;
@@ -27,9 +32,13 @@ Tetris
 </style>
 </head>
 
-<body bgcolor=black>
+<body bgcolor="black" scroll="no" style="overflow: hidden">
 <div class="game">
-  <canvas id="game_canvas" width="562" height="640" muted="muted"></canvas>
+  <canvas id="game_canvas" width="562" height="640" muted="muted"></canvas><br/>
+  <button onclick="ctx.keyhandler({key: 'ArrowLeft'});"><b>&#x2190;</b>Left </button>
+  <button onclick="ctx.keyhandler({key: 'ArrowUp'});">Rotate</button>
+  <button onclick="ctx.keyhandler({key: 'ArrowRight'});">Right<b>&#x2192;</b></button>
+  <button onclick="ctx.keyhandler({key: ' '});">Drop</button>
   <p>
 <table>
   <tr><th colspan="2">TET&#7449;IS</th></tr>
@@ -280,6 +289,7 @@ async function Init() {
   ctx.current_coords = [[], [], [], []];
   ctx.game_ticks = 0;
   ctx.drop_ticks = 0;
+  ctx.button_ticks = 0;
   ctx.last_frame_ms = Date.now();
   ctx.status = IN_PLAY;
   ctx.first_press = true;
@@ -431,9 +441,12 @@ async function Game() {
           }
           break;
         case ' ':
-          while (!CollisionDetected(0, 1)) {
-            changed = true;
-            MoveTetromino(0, 1);
+          if (ctx.game_ticks > ctx.button_ticks + 5) {
+            while (!CollisionDetected(0, 1)) {
+              changed = true;
+              MoveTetromino(0, 1);
+            }
+            ctx.button_ticks = ctx.game_ticks;
           }
           break;
         case 'ArrowUp':
@@ -452,6 +465,5 @@ async function Game() {
 Game();
 
 </script>
-
 </body>
 </html>
