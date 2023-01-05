@@ -29,7 +29,9 @@ The following languages are implemented:
 * Pascal (SDL)
 * Perl (SDL, SDLx)
 * Python3 (Pygame using SDL)
-* Scheme (guile using Chickadee (SDL based))
+* Scheme
+    * Guile (SDL))
+    * Guile (Chickadee based on SDL))
 
 I intend to write more language implementations.
 
@@ -38,8 +40,8 @@ differences exist. Some differences are:
 
 * Keyboard handling and repeated key presses are close but not identical.
 * The timing of the frame rate and piece-drop rate is within a few percent the same.
-* The C, C++, Go, and Pascal versions use GPU textures, so the board can be easily scaled.
-    * The Javascript, Perl, Python, and Scheme versions use bitmaps and are at a fixed size.
+* The C, C++, Go, Pascal, and Scheme Guile versions use GPU textures, so the board can be easily scaled.
+    * The Javascript, Perl, Python, and Scheme Chickadee versions use bitmaps and are at a fixed size.
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
 * The Javascript versions are written with asynchronous callbacks.
