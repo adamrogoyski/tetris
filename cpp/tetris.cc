@@ -362,27 +362,31 @@ class GameContext {
   void DrawStatus() {
     // Wall extends from top to bottom, separating the board from the status area.
     SDL_Rect dstwall = {.x=width_*block_size_, .y=0, .w=50, .h=height_*block_size_};
-    SDL_RenderCopy(renderer_, graphics_.wall, nullptr, &dstwall);
+    SDL_RenderCopy(renderer_, graphics_.wall, NULL, &dstwall);
 
     // The logo sits at the top right of the screen right of the wall.
-    SDL_Rect dstlogo = {.x=width_*block_size_ + 60, .y=20, .w=99, .h=44};
-    SDL_RenderCopy(renderer_, graphics_.logo, nullptr, &dstlogo);
+    const int left_border = width_*block_size_ + 50 + 6*block_size_*0.05;
+    const int width = 6*block_size_*0.90;
+    SDL_Rect dstlogo = {.x=left_border, .y=0, .w=width, .h=static_cast<int>(height_px_*0.20)};
+    SDL_RenderCopy(renderer_, graphics_.logo, NULL, &dstlogo);
 
     // Write the number of completed lines.
     char text_lines[12];
     snprintf(text_lines, sizeof(text_lines), "Lines: %d", completed_lines_);
-    DrawText(text_lines, width_*block_size_+60, 100, 100, 50);
+    DrawText(text_lines, left_border, height_px_*0.25, width, height_px_*0.05);
 
     // Write the current game level.
     snprintf(text_lines, sizeof(text_lines), "Level: %d", completed_lines_ / 3);
-    DrawText(text_lines, width_*block_size_+60, 180, 100, 50);
+    DrawText(text_lines, left_border, height_px_*0.35, width, height_px_*0.05);
 
     // Draw the next tetromino piece.
     for (int i = 0; i < 4; ++i) {
-      const int x = (starting_positions[next_piece_-1][i][0])*block_size_ + width_*block_size_ + 4*block_size_;
-      const int y = starting_positions[next_piece_-1][i][1]*block_size_ + std::max(4, height_/2 -1)*block_size_;
+      const int top_border = height_px_ * 0.45;
+      const int left_border = (width_ + 2)*block_size_ + 50 + 6*block_size_*0.05;
+      const int x = left_border + starting_positions[next_piece_-1][i][0]*block_size_;
+      const int y = top_border + starting_positions[next_piece_-1][i][1]*block_size_;
       SDL_Rect dst = {.x=x, .y=y, .w=block_size_, .h=block_size_};
-      SDL_RenderCopy(renderer_, graphics_.blocks[next_piece_], nullptr, &dst);
+      SDL_RenderCopy(renderer_, graphics_.blocks[next_piece_], NULL, &dst);
     }
   }
 

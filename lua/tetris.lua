@@ -197,17 +197,17 @@ end
 
 function drawGameOver(ctx)
   -- Create a black box with margins for the gameover message.
-  local box_height = math.floor(ctx.height_px * 0.30)
-  local box_top_border = math.floor(ctx.height_px * 0.35)
+  local box_height = math.floor(ctx.height_px * 0.125)
+  local box_top_border = math.floor(ctx.height_px * 0.4375)
   local rect_surface = assert(SDL.createRGBSurface(ctx.width_px, box_height, 24))
   assert(rect_surface.fillRect(rect_surface, {w=ctx.width_px, h=box_height, x=0, y=0}, color))
   local rect_texture = assert(ctx.renderer:createTextureFromSurface(rect_surface, 0xFF0000))
   ctx.renderer:copy(rect_texture, nil, {w=ctx.width_px, h=box_height, x=0, y=box_top_border})
 
-  local msg_height = math.floor(ctx.height_px * 0.20)
-  local msg_width = math.floor(ctx.width_px * 0.95)
-  local msg_top_border = math.floor(ctx.height_px * 0.40)
-  local msg_left_border = math.floor(ctx.width_px * 0.025)
+  local msg_height = math.floor(ctx.height_px * 0.125)
+  local msg_width = math.floor(ctx.width_px * 0.90)
+  local msg_top_border = math.floor(ctx.height_px * 0.4375)
+  local msg_left_border = math.floor(ctx.width_px * 0.05)
   local rect_surface = assert(SDL.createRGBSurface(msg_width, msg_height, 24))
   text = assert(ctx.renderer:createTextureFromSurface(ctx.font:renderUtf8("The only winning move is not to play", "solid", 0xFF0000)))
   ctx.renderer:copy(text, nil, {w=msg_width, h=msg_height, x=msg_left_border, y=msg_top_border})

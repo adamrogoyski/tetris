@@ -415,10 +415,10 @@ void GameLoop(SDL_Window* window, SDL_Renderer* renderer, GameContext* ctx) {
   DrawBoard(renderer, ctx);
   DrawStatus(renderer, ctx);
   // Clear a rectangle for the game-over message and write the message.
-  SDL_Rect msgbox = {.x=0, .y=ctx->height_px*0.35, .w=ctx->width_px, .h=ctx->height_px*0.30};
+  SDL_Rect msgbox = {.x=0, .y=ctx->height_px*0.4375, .w=ctx->width_px, .h=ctx->height_px*0.125};
   SDL_RenderCopy(renderer, ctx->graphics.block_black, NULL, &msgbox);
   const char msg[37] = "The only winning move is not to play";
-  DrawText(renderer, ctx, msg, ctx->width_px*0.025, ctx->height_px*0.40, ctx->width_px*0.95, ctx->height_px*0.20);
+  DrawText(renderer, ctx, msg, ctx->width_px*0.05, ctx->height_px*0.4375, ctx->width_px*0.90, ctx->height_px*0.125);
   SDL_RenderPresent(renderer);
   while (true) {
     while (SDL_PollEvent(&e)) {
