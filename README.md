@@ -26,6 +26,7 @@ The following languages are implemented:
 * Javascript
     * NodeJS using SDL and Canvas
     * Web browser with Canvas ([try it](https://www.rogoyski.com/adam/programs/tetris-web/))
+* Lua (SDL)
 * Pascal (SDL)
 * Perl (SDL, SDLx)
 * Python3 (Pygame using SDL)
@@ -45,6 +46,7 @@ differences exist. Some differences are:
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
 * The Javascript versions are written with asynchronous callbacks.
+* The Lua version uses arrays indexed starting at 1.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
