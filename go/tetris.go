@@ -341,23 +341,26 @@ func (ctx *GameContext) DrawStatus() {
 	ctx.renderer.Copy(ctx.graphics.wall, nil, &dstwall)
 
 	// The logo sits at the top right of the screen right of the wall.
-	dstlogo := sdl.Rect{X: int32(ctx.width*ctx.block_size + 60), Y: 20, W: 99, H: 44}
+	left_border := int32(ctx.width*ctx.block_size + 50 + 6*int(float32(ctx.block_size)*0.05))
+	width := int32(6 * float32(ctx.block_size) * 0.90)
+	dstlogo := sdl.Rect{X: left_border, Y: 0, W: width, H: int32(float32(ctx.HeightPx()) * 0.20)}
 	ctx.renderer.Copy(ctx.graphics.logo, nil, &dstlogo)
 
 	// Write the number of completed lines.
-	ctx.DrawText(fmt.Sprintf("Lines: %d", ctx.completed_lines), int32(ctx.width*ctx.block_size+60), 100, 100, 50)
+	ctx.DrawText(fmt.Sprintf("Lines: %d", ctx.completed_lines), left_border, int32(float32(ctx.HeightPx())*0.25), width, int32(float32(ctx.HeightPx())*0.05))
 
 	// Write the current game level.
-	ctx.DrawText(fmt.Sprintf("Level: %d", ctx.completed_lines/3), int32(ctx.width*ctx.block_size+60), 180, 100, 50)
+	ctx.DrawText(fmt.Sprintf("Level: %d", ctx.completed_lines/3), left_border, int32(float32(ctx.HeightPx())*0.35), width, int32(float32(ctx.HeightPx())*0.05))
 
 	// Draw the next tetromino piece.
 	for i := 0; i < 4; i++ {
-		x := (starting_positions[ctx.next_piece-1][i][0])*ctx.block_size + ctx.width*ctx.block_size + 4*ctx.block_size
-		y := starting_positions[ctx.next_piece-1][i][1]*ctx.block_size + Max(4, ctx.height/2-1)*ctx.block_size
+		top_border := int(float32(ctx.HeightPx()) * 0.45)
+		left_border := (ctx.width+2)*ctx.block_size + 50*6*int(float32(ctx.block_size)*0.05)
+		x := left_border + starting_positions[ctx.next_piece-1][i][0]*ctx.block_size
+		y := top_border + starting_positions[ctx.next_piece-1][i][1]*ctx.block_size
 		dst := sdl.Rect{X: int32(x), Y: int32(y), W: int32(ctx.block_size), H: int32(ctx.block_size)}
 		ctx.renderer.Copy(ctx.graphics.blocks[ctx.next_piece], nil, &dst)
 	}
-
 }
 
 func (ctx *GameContext) DrawScreen() {
