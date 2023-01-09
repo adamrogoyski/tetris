@@ -135,26 +135,31 @@ procedure DrawStatus();
 var
   dst: TSDL_Rect;
   i, x, y: integer;
+  left_border, status_width, top_border: SmallInt;
 begin
   (* Wall extends from top to bottom, separating the board from the status area. *)
   dst.x := width * block_size; dst.y := 0; dst.w := 50; dst.h := height*block_size;
   SDL_RenderCopy(renderer, wall, nil, @dst);
 
   (* The logo sits at the top right of the screen right of the wall. *)
-  dst.x := width * block_size + 60; dst.y := 20; dst.w := 6*block_size - 20; dst.h := 3 * block_size;
+  left_border := width * block_size + 50 + round(6*block_size*0.05);
+  status_width := round(6 * block_size * 0.90);
+  dst.x := left_border; dst.y := 0; dst.w := status_width; dst.h := round(height_px*0.20);
   SDL_RenderCopy(renderer, logo, nil, @dst);
 
   (* Write the number of completed lines. *)
-  DrawText(width*block_size+60, 3*block_size + 50, 100, 50, Concat('Lines: ', IntToStr(ctx.completed_lines)));
+  DrawText(left_border, round(height_px*0.25), status_width, round(height_px*0.05), Concat('Lines: ', IntToStr(ctx.completed_lines)));
 
   (* Write the current game level. *)
-  DrawText(width*block_size+60, 3*block_size + 130, 100, 50, Concat('Level: ', IntToStr(ctx.completed_lines div 3)));
+  DrawText(left_border, round(height_px*0.35), status_width, round(height_px*0.05), Concat('Level: ', IntToStr(ctx.completed_lines div 3)));
 
   (* Draw the next tetromino piece. *)
   for i := 0 to 3 do
   begin
-    x := (starting_positions[ctx.next_piece-1][i][0])*block_size + width*block_size + 4*block_size;
-    y := starting_positions[ctx.next_piece-1][i][1]*block_size + 5*block_size + 180;
+    top_border := round(height_px * 0.45);
+    left_border := (width+2)*block_size + 50 + round(6*block_size*0.05);
+    x := left_border + starting_positions[ctx.next_piece-1][i][0]*block_size;
+    y := top_border + starting_positions[ctx.next_piece-1][i][1]*block_size;
     dst.x := x; dst.y := y; dst.w := block_size; dst.h := block_size;
     SDL_RenderCopy(renderer, blocks[ctx.next_piece], nil, @dst);
   end;
@@ -223,10 +228,10 @@ begin
   song_korobeiniki  := Mix_LoadWAV('sound/korobeiniki.wav');  if song_korobeiniki  = nil then begin Writeln(SDL_GetError); Halt; end;
   song_russiansong  := Mix_LoadWAV('sound/russiansong.wav');  if song_russiansong  = nil then begin Writeln(SDL_GetError); Halt; end;
   sound_gameover    := Mix_LoadWAV('sound/gameover.wav');     if sound_gameover    = nil then begin Writeln(SDL_GetError); Halt; end;
-  PlayMusic(song_bwv814menuet, true);
+  PlayMusic(song_korobeiniki, true);
 
   if TTF_Init = -1 then HALT;
-  font := TTF_OpenFont('fonts/Montserrat-Regular.ttf', 40);
+  font := TTF_OpenFont('fonts/Montserrat-Regular.ttf', 48);
   if font = nil then begin Writeln(SDL_GetError); HALT; end;
   red.r := 255; red.g := 0; red.b := 0;
 
