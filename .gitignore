@@ -1,6 +1,7 @@
 python/*.py.swp
 **/*.o
 perl/*.bak
+**/node_modules
 
 c/tetris
 cpp/tetris

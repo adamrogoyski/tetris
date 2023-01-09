@@ -276,22 +276,26 @@ void DrawStatus(SDL_Renderer* renderer, GameContext* const ctx) {
   SDL_RenderCopy(renderer, ctx->graphics.wall, NULL, &dstwall);
 
   // The logo sits at the top right of the screen right of the wall.
-  SDL_Rect dstlogo = {.x=ctx->width*ctx->block_size + 60, .y=20, .w=99, .h=44};
+  const int left_border = ctx->width*ctx->block_size + 50 + 6*ctx->block_size*0.05;
+  const int width = 6*ctx->block_size*0.90;
+  SDL_Rect dstlogo = {.x=left_border, .y=0, .w=width, .h=ctx->height_px*0.20};
   SDL_RenderCopy(renderer, ctx->graphics.logo, NULL, &dstlogo);
 
   // Write the number of completed lines.
   char text_lines[12];
   snprintf(text_lines, sizeof(text_lines), "Lines: %d", ctx->completed_lines);
-  DrawText(renderer, ctx, text_lines, ctx->width*ctx->block_size+60, 100, 100, 50);
+  DrawText(renderer, ctx, text_lines, left_border, ctx->height_px*0.25, width, ctx->height_px*0.05);
 
   // Write the current game level.
   snprintf(text_lines, sizeof(text_lines), "Level: %d", ctx->completed_lines / 3);
-  DrawText(renderer, ctx, text_lines, ctx->width*ctx->block_size+60, 180, 100, 50);
+  DrawText(renderer, ctx, text_lines, left_border, ctx->height_px*0.35, width, ctx->height_px*0.05);
 
   // Draw the next tetromino piece.
   for (int i = 0; i < 4; ++i) {
-    const int x = (starting_positions[ctx->next_piece-1][i][0])*ctx->block_size + ctx->width*ctx->block_size + 4*ctx->block_size;
-    const int y = starting_positions[ctx->next_piece-1][i][1]*ctx->block_size + MAX(4, ctx->height/2 -1)*ctx->block_size;
+    const int top_border = ctx->height_px * 0.45;
+    const int left_border = (ctx->width + 2)*ctx->block_size + 50 + 6*ctx->block_size*0.05;
+    const int x = left_border + starting_positions[ctx->next_piece-1][i][0]*ctx->block_size;
+    const int y = top_border + starting_positions[ctx->next_piece-1][i][1]*ctx->block_size;
     SDL_Rect dst = {.x=x, .y=y, .w=ctx->block_size, .h=ctx->block_size};
     SDL_RenderCopy(renderer, ctx->graphics.blocks[ctx->next_piece], NULL, &dst);
   }
@@ -411,10 +415,10 @@ void GameLoop(SDL_Window* window, SDL_Renderer* renderer, GameContext* ctx) {
   DrawBoard(renderer, ctx);
   DrawStatus(renderer, ctx);
   // Clear a rectangle for the game-over message and write the message.
-  SDL_Rect msgbox = {.x=0, .y=ctx->height_px*0.4375, .w=ctx->width_px, .h=ctx->height_px*0.125};
+  SDL_Rect msgbox = {.x=0, .y=ctx->height_px*0.35, .w=ctx->width_px, .h=ctx->height_px*0.30};
   SDL_RenderCopy(renderer, ctx->graphics.block_black, NULL, &msgbox);
   const char msg[37] = "The only winning move is not to play";
-  DrawText(renderer, ctx, msg, ctx->width_px*0.05, ctx->height_px*0.4375, ctx->width_px*0.9, ctx->height_px*0.125);
+  DrawText(renderer, ctx, msg, ctx->width_px*0.025, ctx->height_px*0.40, ctx->width_px*0.95, ctx->height_px*0.20);
   SDL_RenderPresent(renderer);
   while (true) {
     while (SDL_PollEvent(&e)) {
