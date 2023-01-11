@@ -25,7 +25,7 @@ use SDLx::Text;
 our $VERSION = 1;
 
 Readonly::Scalar my $WIDTH       => 10;
-Readonly::Scalar my $HEIGHT      => 30;
+Readonly::Scalar my $HEIGHT      => 20;
 Readonly::Scalar my $BLOCK_SIZE  => 32;
 Readonly::Scalar my $WALL_WIDTH  => 50;
 Readonly::Scalar my $WALL_HEIGHT => 640;
@@ -248,35 +248,41 @@ sub draw_status {
     }
 
     # The logo sits at the top right of the screen right of the wall.
-    Readonly::Scalar my $WALL_X => $WIDTH * $BLOCK_SIZE + 60;
-    Readonly::Scalar my $WALL_Y => 20;
+    Readonly::Scalar my $LEFT_BORDER => $WIDTH * $BLOCK_SIZE + 50 +
+      6 * $BLOCK_SIZE * 0.05;
+    Readonly::Scalar my $STATUS_WIDTH         => 6 * $BLOCK_SIZE * 0.90;
+    Readonly::Scalar my $LOGO_RELATIVE_HEIGHT => 0.20;
     $logo->blit(
         $app_r,
-        [ 0, 0, $LOGO_WIDTH, $LOGO_HEIGHT ],
-        [ $WALL_X, $WALL_Y ]
+        [ 0, 0, $STATUS_WIDTH, $HEIGHT_PX * $LOGO_RELATIVE_HEIGHT ],
+        [ $LEFT_BORDER, 0 ]
     );
 
     # Write the number of completed lines.
-    Readonly::Scalar my $LINES_X => $WIDTH * $BLOCK_SIZE + 60;
-    Readonly::Scalar my $LINES_Y => 100;
-    $font_small->write_xy( $app_r, $LINES_X, $LINES_Y,
-        'Lines: ' . $completed_lines );
+    Readonly::Scalar my $LINES_RELATIVE_HEIGHT => 0.25;
+    $font_small->write_xy(
+        $app_r, $LEFT_BORDER,
+        $HEIGHT_PX * $LINES_RELATIVE_HEIGHT,
+        'Lines: ' . $completed_lines
+    );
 
     # Write the current game level.
-    Readonly::Scalar my $LEVEL_X => $WIDTH * $BLOCK_SIZE + 60;
-    Readonly::Scalar my $LEVEL_Y => 180;
-    $font_small->write_xy( $app_r, $LEVEL_X, $LEVEL_Y,
-        'Level: ' . int( $completed_lines / $LINES_PER_LEVEL ) );
+    Readonly::Scalar my $LEVEL_RELATIVE_HEIGHT => 0.35;
+    $font_small->write_xy(
+        $app_r, $LEFT_BORDER,
+        $HEIGHT_PX * $LEVEL_RELATIVE_HEIGHT,
+        'Level: ' . int( $completed_lines / $LINES_PER_LEVEL )
+    );
 
     # Draw the next tetromino piece.
+    Readonly::Scalar my $TOP_BORDER => $HEIGHT_PX * 0.45;
+    Readonly::Scalar my $N_LEFT_BORDER => ( $WIDTH + 2 ) * $BLOCK_SIZE + 50 +
+      6 * $BLOCK_SIZE * 0.05;
     for my $i ( 0 .. $BLOCKS_PER_PIECE - 1 ) {
-        Readonly::Scalar my $X =>
-          ( $STARTING_POSITIONS[ $next_piece - 1 ][$i][0] + $WIDTH + 4 ) *
-          $BLOCK_SIZE;
-        Readonly::Scalar my $Y =>
-          ( $STARTING_POSITIONS[ $next_piece - 1 ][$i][1] +
-              ( 4 > $HEIGHT / 2 - 1 ? 4 : $HEIGHT / 2 - 1 ) ) *
-          $BLOCK_SIZE;
+        Readonly::Scalar my $X => $N_LEFT_BORDER +
+          $STARTING_POSITIONS[ $next_piece - 1 ][$i][0] * $BLOCK_SIZE;
+        Readonly::Scalar my $Y => $TOP_BORDER +
+          $STARTING_POSITIONS[ $next_piece - 1 ][$i][1] * $BLOCK_SIZE;
         my $block = $blocks[$next_piece];
         $block->blit( $app_r, [ 0, 0, $BLOCK_SIZE, $BLOCK_SIZE ], [ $X, $Y ] );
     }
@@ -480,7 +486,7 @@ while ( $state != $STATE_GAMEOVER ) {
     SDL::Events::pump_events();
     while ( SDL::Events::poll_event($event) ) {
         given ( $event->type ) {
-            when (SDL_QUIT) { quit(); }
+            when (SDL_QUIT) { exit; }
             when (SDL_KEYDOWN) {
                 given ( SDL::Events::get_key_name( $event->key_sym ) ) {
                     when (/q|esc/msx) { exit; }
@@ -573,7 +579,7 @@ Readonly::Scalar my $POLL_DELAY => 10;
 while (1) {
     while ( SDL::Events::poll_event($event) ) {
         given ( $event->type ) {
-            when (SDL_QUIT) { quit(); }
+            when (SDL_QUIT) { exit; }
             when (SDL_KEYDOWN) {
                 given ( SDL::Events::get_key_name( $event->key_sym ) ) {
                     when (/q|esc/msx) { exit; }
