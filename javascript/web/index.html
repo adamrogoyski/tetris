@@ -297,24 +297,29 @@ async function Init() {
 
 function DrawStatus() {
   // Wall extends from top to bottom, separating the board from the status area.
-  ctx.sctx.drawImage(ctx.wall, WIDTH*BLOCK_SIZE, 0);
+  for (h = 0; h < HEIGHT_PX; h += Math.min(HEIGHT_PX - h, 640)) {
+    ctx.sctx.drawImage(ctx.wall, WIDTH*BLOCK_SIZE, h);
+  }
 
   // The logo sits at the top right of the screen right of the wall.
-  ctx.sctx.drawImage(ctx.logo, WIDTH*BLOCK_SIZE + 60, 20);
+  const left_border = WIDTH*BLOCK_SIZE + 50 + 6*BLOCK_SIZE*0.05;
+  ctx.sctx.drawImage(ctx.logo, left_border, 0);
 
 
   // Write the number of completed lines.
   ctx.sctx.font = "24px serif";
   ctx.sctx.fillStyle = 'red';
-  ctx.sctx.fillText("Lines: " + ctx.completed_lines.toString(), WIDTH*BLOCK_SIZE + 60, 120);
+  ctx.sctx.fillText("Lines: " + ctx.completed_lines.toString(), left_border, HEIGHT_PX*0.25);
 
  // Write the current game level.
-  ctx.sctx.fillText("Level: " + Math.floor(ctx.completed_lines / 3).toString(), WIDTH*BLOCK_SIZE + 60, 180);
+  ctx.sctx.fillText("Level: " + Math.floor(ctx.completed_lines / 3).toString(), left_border, HEIGHT_PX*0.35);
 
   // Draw the next tetromino piece.
   for (i = 0; i < 4; ++i) {
-    const x = (starting_positions[ctx.next_piece-1][i][0])*BLOCK_SIZE + WIDTH*BLOCK_SIZE + 4*BLOCK_SIZE;
-    const y = starting_positions[ctx.next_piece-1][i][1]*BLOCK_SIZE + Math.max(4, HEIGHT/2 -1)*BLOCK_SIZE;
+    const top_border = HEIGHT_PX * 0.45;
+    const nb_left_border = (WIDTH + 2)*BLOCK_SIZE + 50 + Math.floor(6*BLOCK_SIZE*0.05);
+    const x = nb_left_border + starting_positions[ctx.next_piece-1][i][0]*BLOCK_SIZE;
+    const y = top_border + starting_positions[ctx.next_piece-1][i][1]*BLOCK_SIZE;
     ctx.sctx.drawImage(ctx.blocks[ctx.next_piece], x, y);
   }
 }
