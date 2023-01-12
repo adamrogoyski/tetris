@@ -38,6 +38,8 @@ class GameContext(object):
     # Each block is 32x32 pixels.
     # Each tetromino (piece) is made up of 4 blocks.
     self.block_size = 32
+    self.height_px = self.height * self.block_size
+    self.width_px = (self.width + 6) * self.block_size + 50
 
     self.screen = self.SetupScreen()
     self.sound_line_cleared = self.SetupSound()
@@ -105,9 +107,7 @@ class GameContext(object):
 
   def SetupScreen(self) -> pygame.Surface:
     pygame.init()
-    width_pixels = self.width*self.block_size + 180  # 50px for the wall and 130 for status.
-    height_pixels = self.height*self.block_size
-    SCREENRECT = pygame.rect.Rect(0, 0, width_pixels, height_pixels)
+    SCREENRECT = pygame.rect.Rect(0, 0, self.width_px, self.height_px)
     depth = pygame.display.mode_ok(SCREENRECT.size, depth=32)
     return pygame.display.set_mode(SCREENRECT.size, depth=depth)
 
@@ -250,26 +250,31 @@ def DrawBoard(c: GameContext) -> None:
   c.screen.fill((0, 0, 0))
 
   # The right-side board wall is 50x640 pixels and needs to extend the whole screen.
-  for x in range(math.ceil(c.height*c.block_size / 640)):
-    c.screen.blit(c.wall_img, (c.width*c.block_size, x * 640))
-  c.screen.blit(c.logo_img, (c.width*c.block_size + 60, 20))
+  for i in range(math.ceil(c.height*c.block_size / 640)):
+    c.screen.blit(c.wall_img, (c.width*c.block_size, i * 640))
+
+  left_border = c.width*c.block_size + 50 + 6*c.block_size*0.05;
+  c.screen.blit(c.logo_img, (left_border, 0))
 
   lines_text = 'Lines: %s' % c.completed_lines
   lines_img = c.regular_font.render(lines_text, 0, (255, 0, 0), (0, 0, 0))
   lines_img = lines_img.convert()
   lines_img = pygame.transform.scale(lines_img, (len(lines_text)*8, 30))
-  c.screen.blit(lines_img, (c.width*c.block_size + 60, 100))
+  c.screen.blit(lines_img, (left_border, c.height_px*0.25))
 
   level_text = 'level: %s' % (c.completed_lines // 3)
   level_img = c.regular_font.render(level_text, 0, (255, 0, 0), (0, 0, 0))
   level_img = level_img.convert()
   level_img = pygame.transform.scale(level_img, (len(lines_text)*8, 30))
-  c.screen.blit(level_img, (c.width*c.block_size + 60, 150))
+  c.screen.blit(level_img, (left_border, c.height_px*0.35))
 
   following_piece = copy.deepcopy(c.starting_positions[c.following_tetromino])
   for coords in following_piece:
-    c.screen.blit(c.blocks[c.following_tetromino], ((coords[0]-(c.center-1))*c.block_size + c.width*c.block_size + 75,
-                                                    coords[1]*c.block_size + 300))
+    top_border = int(c.height_px * 0.45);
+    left_border = (c.width + 2)*c.block_size + 50 + int(6*c.block_size*0.05);
+    x = left_border + (coords[0] - c.center)*c.block_size;
+    y = top_border + coords[1]*c.block_size;
+    c.screen.blit(c.blocks[c.following_tetromino], (x, y))
 
   for y in range(c.height):
     for x in range(c.width):
