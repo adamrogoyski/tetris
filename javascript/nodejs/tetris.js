@@ -152,23 +152,28 @@ function Init() {
 
 function DrawStatus(sctx) {
   // Wall extends from top to bottom, separating the board from the status area.
-  sctx.drawImage(ctx.wall, WIDTH*BLOCK_SIZE, 0);
+  for (h = 0; h < HEIGHT_PX; h += Math.min(HEIGHT_PX - h, 640)) {
+    sctx.drawImage(ctx.wall, WIDTH*BLOCK_SIZE, h);
+  }
 
   // The logo sits at the top right of the screen right of the wall.
-  sctx.drawImage(ctx.logo, WIDTH*BLOCK_SIZE + 60, 20);
+  const left_border = WIDTH*BLOCK_SIZE + 50 + 6*BLOCK_SIZE*0.05;
+  sctx.drawImage(ctx.logo, left_border, 0);
 
   // Write the number of completed lines.
   sctx.font = "24px serif";
   sctx.fillStyle = 'red';
-  sctx.fillText("Lines: " + ctx.completed_lines.toString(), WIDTH*BLOCK_SIZE + 60, 120);
+  sctx.fillText("Lines: " + ctx.completed_lines.toString(), left_border, HEIGHT_PX*0.25);
 
  // Write the current game level.
-  sctx.fillText("Level: " + Math.floor(ctx.completed_lines / 3).toString(), WIDTH*BLOCK_SIZE + 60, 180);
+  sctx.fillText("Level: " + Math.floor(ctx.completed_lines / 3).toString(), left_border, HEIGHT_PX*0.35);
 
   // Draw the next tetromino piece.
   for (i = 0; i < 4; ++i) {
-    const x = (starting_positions[ctx.next_piece-1][i][0])*BLOCK_SIZE + WIDTH*BLOCK_SIZE + 4*BLOCK_SIZE;
-    const y = starting_positions[ctx.next_piece-1][i][1]*BLOCK_SIZE + Math.max(4, HEIGHT/2 -1)*BLOCK_SIZE;
+    const top_border = HEIGHT_PX * 0.45;
+    const nb_left_border = (WIDTH + 2)*BLOCK_SIZE + 50 + Math.floor(6*BLOCK_SIZE*0.05);
+    const x = nb_left_border + starting_positions[ctx.next_piece-1][i][0]*BLOCK_SIZE;
+    const y = top_border + starting_positions[ctx.next_piece-1][i][1]*BLOCK_SIZE;
     sctx.drawImage(ctx.blocks[ctx.next_piece], x, y);
   }
 }
@@ -292,8 +297,8 @@ function GameTick() {
     ctx.sctx.fillStyle = 'black';
     ctx.sctx.fillRect(0, Math.floor(HEIGHT_PX*0.4375), WIDTH_PX, Math.floor(HEIGHT_PX*0.125));
     ctx.sctx.fillStyle = 'red';
-    ctx.sctx.font = "28px serif";
-    ctx.sctx.fillText('The only winning move is not to play', WIDTH_PX*0.05, Math.floor(HEIGHT_PX*0.51));
+    ctx.sctx.font = "48px serif";
+    ctx.sctx.fillText('The only winning move is not to play', WIDTH_PX*0.05, Math.floor(HEIGHT_PX*0.51), WIDTH_PX*0.90);
     ctx.window.render(WIDTH_PX, HEIGHT_PX, WIDTH_PX*4, 'bgra32', ctx.screen_canvas.toBuffer('raw'));
 
     ctx.window.removeListener('keyDown', ctx.keyhandler);
