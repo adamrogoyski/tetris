@@ -1,0 +1,31 @@
+{
+  "name": "tetris",
+  "version": "1.0.0",
+  "description": "Tetris - a basic game",
+  "main": "tetris.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamrogoyski/tetris.git"
+  },
+  "keywords": [
+    "Tetris"
+  ],
+  "author": "Adam F. Rogoyski <adam@rogoyski.com>",
+  "license": "CC-PDDC",
+  "bugs": {
+    "url": "https://github.com/adamrogoyski/tetris/issues"
+  },
+  "homepage": "https://github.com/adamrogoyski/tetris#readme",
+  "dependencies": {
+    "typescript": "^4.9.4",
+    "@kmamal/sdl": ">=0.6.7",
+    "canvas": ">=2.0.0",
+    "node-aplay": ">=1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18"
+  }
+}

@@ -33,6 +33,7 @@ The following languages are implemented:
 * Scheme
     * Guile (SDL))
     * Guile (Chickadee based on SDL))
+* Typescript (NodeJS using SDL and Canvas)
 
 I intend to write more language implementations.
 
