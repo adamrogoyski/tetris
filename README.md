@@ -45,6 +45,7 @@ differences exist. Some differences are:
     * The Javascript, Perl, Python, and Scheme Chickadee versions use bitmaps and are at a fixed size.
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
+* The Scheme chickadee version has the y coordinate axis flipped.
 * The Javascript versions are written with asynchronous callbacks.
 * The Lua version uses arrays indexed starting at 1.
 

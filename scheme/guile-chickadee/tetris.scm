@@ -38,7 +38,8 @@
 (set-source-audio! music-loop song-korobeiniki)
 (source-play music-loop)
 
-(define font-small (load-font "fonts/Montserrat-Regular.ttf" 16))
+(define font-small (load-font "fonts/Montserrat-Regular.ttf" 20))
+(define font-big (load-font "fonts/Montserrat-Regular.ttf" 30))
 (define color-red (make-color 1.0 0.0 0.0 1.0))
 
 ; One of ('play 'pause 'gameover).
@@ -48,6 +49,8 @@
 (define board.block.width 10)
 (define board.block.height 20)
 (define square-size 32)
+(define height-px (* board.block.height square-size))
+(define width-px (+ (* (+ board.block.width 6) square-size) 50))
 (define (make-board-rows board width height)
   (define (make-row n)
     (if (= n 0)
@@ -288,30 +291,33 @@
              (draw-sprite wall (vec2 (* board.block.width square-size) height))
              (draw-wall (+ height 640))))))
   ; Clear the screen black to the right of the board.
-  (draw-9-patch block-black (make-rect 0 0 (+ (* board.block.width square-size) 180) (* board.block.height square-size)))
+  (draw-9-patch block-black (make-rect 0 0 width-px height-px))
   (draw-board board 0)
   (draw-wall 0)
-  (let ((status-x (+ (* board.block.width square-size) 60))
-        (top-y (* board.block.height square-size)))
-    (draw-sprite logo (vec2 status-x (- top-y 64)))
-    (draw-text (string-append "Lines: " (number->string completed-lines)) (vec2 status-x (- top-y 100)) #:font font-small #:color color-red)
-    (draw-text (string-append "Level: " (number->string (truncate (/ completed-lines 3)))) (vec2 status-x (- top-y 150)) #:font font-small #:color color-red)
+  (let ((left_border (+ (* board.block.width square-size) 50 (inexact->exact (floor (* 6 square-size 0.05)))))
+        (width (inexact->exact (floor (* 6 square-size 0.90))))
+        (line-height (inexact->exact (floor (* height-px 0.05)))))
+    (draw-sprite logo (vec2 left_border (- height-px 50)))
+    (draw-text (string-append "Lines: " (number->string completed-lines)) (vec2 left_border (inexact->exact (floor (* height-px 0.75)))) #:font font-small #:color color-red)
+    (draw-text (string-append "Level: " (number->string (truncate (/ completed-lines 3)))) (vec2 left_border (inexact->exact (floor (* height-px 0.65)))) #:font font-small #:color color-red)
     ; Draw the next piece on deck to be played as part of the status area.
-    (let ((coords (copy-tree (list-ref starting-positions next-piece-type)))
+    (let ((top_border (inexact->exact (floor (* height-px 0.45))))
+          (left_border (+ (* (+ board.block.width 2) square-size) 50 (inexact->exact (floor (* 6 square-size 0.05)))))
+          (center (floor (/ board.block.width 2)))
           (block (list-ref block-colors next-piece-type))
-          (left-adjust-x (- (/ board.block.width 2) 1))
-          (place-x (+ (* board.block.width square-size) 75)))
+          (coords (copy-tree (list-ref starting-positions next-piece-type))))
       (for-each (lambda (coord)
-                  (let ((x (car  coord))
-                        (y (cadr coord)))
-                    (draw-sprite block (vec2 (+ (* (- x left-adjust-x) square-size) place-x)
-                                             (- (* (- board.block.height y 1) square-size) 300)))))
+                  (let ((x (+ left_border (* (- (car  coord) center) square-size)))
+                        (y (+ top_border  (* (cadr coord) square-size))))
+                    (draw-sprite block (vec2 x y))))
                 coords)))
   (if (eq? game-state 'gameover)
-    (let ((x 25)
-          (y (- (* board.block.height square-size) 75 250)))
-      (draw-9-patch block-black (make-rect x (- y 60) (+ (* board.block.width square-size) 180) 150))
-      (draw-text "The only winning move is not to play" (vec2 x y) #:font font-small #:color color-red #:scale (vec2 1.15 3.0)))))
+    (let ((x (inexact->exact (floor (* width-px 0.05))))
+          (y (inexact->exact (floor (* height-px 0.4375))))
+          (line-y (inexact->exact (floor (* height-px 0.46)))))
+      (draw-9-patch block-black (make-rect x y width-px (inexact->exact (floor (* height-px 0.125)))))
+      ; Font placement is not positioned or scaled properly based on squale-size.
+      (draw-text "The only winning move is not to play" (vec2 x line-y) #:font font-small #:color color-red #:scale (vec2 1.0 2.0)))))
 
 ; Move a piece from (x,y) -> (x+dx, y+dy). A move is placing black blocks over the current piece and adding a new piece
 ; in the updated coordinates.
@@ -351,9 +357,7 @@
                  (add-new-piece board current-piece-type))))))))
 
 (set-window-title! (current-window) "TETЯIS")
-(let ((window.height (* board.block.height square-size))
-      (window.width (+ (* board.block.width square-size) 180)))
-  (set-window-size! (current-window) window.width window.height))
+(set-window-size! (current-window) width-px height-px)
 (display "
 TETЯIS:
 
