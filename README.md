@@ -22,6 +22,7 @@ The following languages are implemented:
 
 * C (SDL)
 * C++ (SDL)
+* Fortran (SDL)
 * Go (SDL)
 * Javascript
     * NodeJS using SDL and Canvas
@@ -42,13 +43,14 @@ differences exist. Some differences are:
 
 * Keyboard handling and repeated key presses are close but not identical.
 * The timing of the frame rate and piece-drop rate is within a few percent the same.
-* The C, C++, Go, Pascal, and Scheme Guile versions use GPU textures, so the board can be easily scaled.
+* The C, C++, Fortran, Go, Pascal, and Scheme Guile versions use GPU textures, so the board can be easily scaled.
     * The Javascript, Perl, Python, and Scheme Chickadee versions use bitmaps and are at a fixed size.
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
 * The Scheme chickadee version has the y coordinate axis flipped.
 * The Javascript versions are written with asynchronous callbacks.
-* The Lua version uses arrays indexed starting at 1.
+* The Fortran and Lua version uses arrays indexed starting at 1.
+* The Fortran version uses column-based arrays.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
