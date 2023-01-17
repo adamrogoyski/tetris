@@ -287,7 +287,7 @@ program main
             game_ticks = game_ticks + 1
             last_frame_ms = now_ms
         end if
-        call sdl_delay(1)
+        call sdl_delay(10)
     end do
 
     ! Game over condition.
@@ -349,7 +349,7 @@ contains
             if (.not. has_hole) then
                 deleted_row = board(row,:)
                 y = row
-                do while (y > rows_deleted)
+                do while (y > rows_deleted+1)
                   board(y,:) = board(y-1,:)
                   y = y - 1
                 end do
