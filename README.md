@@ -61,6 +61,19 @@ and the TETЯIS logo due to the free font used not having the Я character.
 The game is intentionally harder than other Tetris implementations. The level increases every 3
 lines instead of 10. Lines are tracked, but there's no score. Embrace the inevitability of losing.
 
+## Specification
+
+### Rotation System
+
+The rotation system specifies the 4 rotations of each tetromino.
+
+![Rotation System](https://raw.githubusercontent.com/adamrogoyski/tetris/main/screenshots/rotation_system.png)
+
+### Randomizer
+
+Piece selection uses an unbiased random selection of pieces. All pieces are
+equally likely at all times.
+
 ## Code Walk through
 
 Each implementation is similar in approach, with various changes for the style
