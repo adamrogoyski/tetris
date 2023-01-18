@@ -74,6 +74,28 @@ The rotation system specifies the 4 rotations of each tetromino.
 Piece selection uses an unbiased random selection of pieces. All pieces are
 equally likely at all times.
 
+### Layout
+
+The board (left of the wall separator) must be at list 4 blocks wide and 3 blocks in height, though the game will
+end after 1 or any 2 non long tetrominos. The recommended board size is 10 blocks wide
+and 20 blocks in height.
+
+The status area (right of the wall separator) is 6 blocks wide. It contains the logo, lines completed, and level.
+
+### Positions
+
+* Board: left adjent to playing board. Height of the screen equal to board height
+* Wall: right adjacent to playing board
+* Logo: status area, centered, 90% status width, 20% status height, at top of screen
+* Level: status area, centered, 90% status width, 10% status height, 25% from top
+* Lines completed: status area, centered, 90% status width, 10% status height, 35% from top
+* Gameover message: Centered, full width, 12.5% height
+* Next piece: status area, 45% from top, 2 block size left margin from wall
+
+### Scoring
+
+There is no score. Level is increased every 3 cleared lines. Maximum level is 15.
+
 ## Code Walk through
 
 Each implementation is similar in approach, with various changes for the style
