@@ -76,8 +76,8 @@ equally likely at all times.
 
 ### Layout
 
-The board (left of the wall separator) must be at list 4 blocks wide and 3 blocks in height, though the game will
-end after 1 or any 2 non long tetrominos. The recommended board size is 10 blocks wide
+The board (left of the wall separator) must be at least 4 blocks wide and 3 blocks in height, though the game will
+end after 1 or any 2 non-long tetrominos at that size. The recommended board size is 10 blocks wide
 and 20 blocks in height.
 
 The status area (right of the wall separator) is 6 blocks wide. It contains the logo, lines completed, and level.
