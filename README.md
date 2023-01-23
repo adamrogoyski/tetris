@@ -31,6 +31,7 @@ The following languages are implemented:
 * Pascal (SDL)
 * Perl (SDL, SDLx)
 * Python3 (Pygame using SDL)
+* Racket (racket/gui)
 * Scheme
     * Guile (SDL))
     * Guile (Chickadee based on SDL))
@@ -51,6 +52,7 @@ differences exist. Some differences are:
 * The Javascript versions are written with asynchronous callbacks.
 * The Fortran and Lua version uses arrays indexed starting at 1.
 * The Fortran version uses column-based arrays.
+* The Racket version has limited support for music, and no command-line arguments.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
