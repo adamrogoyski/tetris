@@ -395,9 +395,9 @@ function gameover() {
   done
 }
 
-# Append seconds and microseconds, dividin by 1000 to get milliseconds.
+# Append seconds and microseconds, dividing by 1000 to get milliseconds.
 # Fall back to the date command for old versions of bash.
-#declare -i start_ms="$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))"
+declare -i start_ms="$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))"
 start_ms=${start_ms:-$(($(date +%s%N)/1000000))}
 function time_ms() {
   declare -i now_msd
