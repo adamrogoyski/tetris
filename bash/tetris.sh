@@ -27,8 +27,10 @@ fi
 
 declare -ir WIDTH=10
 declare -ir HEIGHT=20
+declare -r BLOCK_SIZE="  "
 declare -ir NUM_TETROMINOS=7
 declare -ir FRAME_RATE_MS=$((1000 / 60))
+declare -r FRED='\e[91m'
 declare -r BLACK='\e[40m'
 declare -r BLUE='\e[104m'
 declare -r CYAN='\e[46m'
@@ -296,12 +298,11 @@ logosml[3]='  *TT   *E       *TT    *R  RR  *II     *S'
 logosml[4]='  *TT   *EEEEE   *TT  *RR   RR  *II  *SSS'
 
 function draw_screen() {
-  declare -r FRED='\e[91m'
   echo -ne "\e[1;0H"
   # Draw the play board.
   for ((y=1; y <= HEIGHT; y++)) do
     for ((x=1; x <= WIDTH; x++)) do
-      echo -ne "${board[${x},${y}]}  "
+      echo -ne "${board[${x},${y}]}${BLOCK_SIZE}"
     done
     # Draw the wall separating the board and status area.
     echo -ne "${DARK_GRAY} ${LIGHT_GRAY}"
@@ -348,8 +349,8 @@ TETЯIS:\r
   echo -ne "\e[$((status_height+2));${status_left}H${FRED} Level: $((completed_lines / 3))"
 
   # Clear out previous next tetromino.
-  echo -ne "\e[$((status_height+5));$((status_left+1))H${color}          "
-  echo -ne "\e[$((status_height+6));$((status_left+1))H${color}          "
+  echo -ne "\e[$((status_height+5));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
+  echo -ne "\e[$((status_height+6));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
 
   # Draw next tetromino.
   declare -r color="${COLORS[${current_piece}]}"
@@ -362,21 +363,18 @@ TETЯIS:\r
   echo -ne "\e[$((HEIGHT+13));0H\e[39m\e[49m"
 }
 
-function debug_dump_board() {
-  echo -e "\e[0;0H"
-  for ((y=1; y <= HEIGHT; y++)) do
-    for ((x=1; x <= WIDTH; x++)) do
-      if [[ ${board[${x},${y}]} != "${BLACK}" ]]; then
-        echo -ne "o"
-      else
-        echo -ne " "
-      fi
-    done
-    echo
-  done
-}
-
 function gameover() {
+  # Clear out a rectangular box.
+  declare line i
+  for ((i=0; i <= WIDTH+8; i++)); do
+    line="${line}${BLOCK_SIZE}"
+  done
+  echo -ne "\e[$((HEIGHT/2-1));0H${BLACK}${line}"
+  echo -ne "\e[$((HEIGHT/2));0H${BLACK}${line}"
+  echo -ne "\e[$((HEIGHT/2+1));0H${BLACK}${line}"
+  echo -ne "\e[$((HEIGHT/2));0H${FRED} The only winning move is not to play"
+  echo -ne "\e[$((HEIGHT+13));0H\e[39m\e[49m"
+
   while :; do
     if poll_keyboard; then
       declare key
@@ -500,7 +498,7 @@ while :; do
       ((game_ticks++))
       last_frame_ms=${now_ms}
     fi
-    # sleep $(((now_ms - last_frame_ms) / 1000))
+    sleep 0.0$(((now_ms - last_frame_ms) / 1000))
   else
     sleep 0.1
   fi
