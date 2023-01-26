@@ -398,9 +398,13 @@ function gameover() {
 }
 
 # Append seconds and microseconds, dividin by 1000 to get milliseconds.
-declare -ir start_ms="$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))"
+# Fall back to the date command for old versions of bash.
+declare -i start_ms="$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))"
+start_ms=${start_ms:-$(($(date +%s%N)/1000000))}
 function time_ms() {
-  echo $(((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000) - start_ms))
+  declare -i now_ms=$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))
+  now_ms=${now_ms:-$(($(date +%s%N)/1000000))}
+  echo "$((now_ms - start_ms))"
 }
 
 draw_screen
@@ -492,7 +496,7 @@ while :; do
       ((game_ticks++))
       last_frame_ms=${now_ms}
     fi
-    sleep $(((now_ms - last_frame_ms) / 1000))
+    # sleep $(((now_ms - last_frame_ms) / 1000))
   else
     sleep 0.1
   fi
