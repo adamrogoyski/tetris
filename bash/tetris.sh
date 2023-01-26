@@ -498,7 +498,7 @@ while :; do
       ((game_ticks++))
       last_frame_ms=${now_ms}
     fi
-    sleep 0.0$(((now_ms - last_frame_ms) / 1000))
+    sleep 0.00$((now_ms - last_frame_ms))
   else
     sleep 0.1
   fi
