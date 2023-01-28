@@ -20,6 +20,7 @@ different elements of a program:
 
 The following languages are implemented:
 
+* Bash (ASCII)
 * C (SDL)
 * C++ (SDL)
 * Fortran (SDL)
@@ -53,6 +54,7 @@ differences exist. Some differences are:
 * The Fortran and Lua version uses arrays indexed starting at 1.
 * The Fortran version uses column-based arrays.
 * The Racket version has limited support for music, and no command-line arguments.
+* The Bash version has no sound.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
