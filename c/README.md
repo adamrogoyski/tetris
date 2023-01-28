@@ -24,6 +24,7 @@ $ docker build -f c/Dockerfile -t adamrogoyski/tetris-c .
 # Copy the dynamically-linked binary out of the image.
 $ docker cp $(docker create --name temp_container_tetris_c adamrogoyski/tetris-c:latest):/usr/src/tetris/tetris . && docker rm temp_container_tetris_c
 $ ./tetris
+```
 
 To run the binary from the docker image to avoid installing the dependencies:
 
