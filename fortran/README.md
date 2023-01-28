@@ -3,7 +3,6 @@
 I, too, was surprised that there are SDL2 bindings for Fortran.
 
 Requires https://github.com/interkosmos/fortran-sdl2.git.
-Build with "make" using gfortran.
 
 To build on Debian (bookworm), in the current directory:
 
