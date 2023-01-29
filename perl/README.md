@@ -7,6 +7,16 @@ and CPAN [page](https://metacpan.org/dist/SDL) for SDL and SDLx module APIs.
 
 For the style used, see [Perl Critic](https://perlmaven.com/perl-critic).
 
+To run on Debian (bookworm), in the current directory:
+
+```
+$ apt -y install perl libsdl-perl make
+$ cpan -i Readonly
+
+$ ./tetris.pl
+```
+
+
 To build with Docker, from the top-level directory:
 
 ```

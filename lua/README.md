@@ -8,6 +8,8 @@ Uses the [lua-sdl2](https://github.com/Tangent128/luasdl2) library. Install with
 
 ```
 $ luarocks install lua-sdl2
+
+$ ./tetris.lua
 ```
 
 To build on Debian (bookworm), in the current directory:
