@@ -18,7 +18,7 @@ from typing import List, Tuple
 def GetPath(path: str) -> str:
   # Obtain the path of graphics/ and sound/ relative to where the executable script is.
   # Realpath will resolve extra components like ./. Two dirnames get to the project parent directory.
-  return os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), path)
+  return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
 
 
 class GameContext(object):
@@ -435,7 +435,7 @@ TETЯIS:
 
     while True:
       for event in pygame.event.get():
-        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key in (pygame.K_ESCAPE, pygame.K_q)):
           sys.exit(0)
       c.clock.tick(40)
 
