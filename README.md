@@ -33,6 +33,7 @@ The following languages are implemented:
 * Perl (SDL, SDLx)
 * Python3 (Pygame using SDL)
 * Racket (racket/gui)
+* Ruby (SDL)
 * Scheme
     * Guile (SDL))
     * Guile (Chickadee based on SDL))
