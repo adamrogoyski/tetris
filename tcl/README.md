@@ -2,11 +2,12 @@
 
 The TK library and canvas is used. Tested with TCL 8.6.
 
-To build on Debian (bookworm), in the current directory:
+To run on Debian (bookworm), in the current directory:
 
 ```
 $ apt -y install tcl tcl-snack
-$ make
+
+$ ./tetris.tcl
 ```
 
 To build with Docker, from the top-level directory:
