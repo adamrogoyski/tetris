@@ -38,6 +38,7 @@ The following languages are implemented:
 * Scheme
     * Guile (SDL))
     * Guile (Chickadee based on SDL))
+* TCL (TK)
 * Typescript (NodeJS using SDL and Canvas)
 
 I intend to write more language implementations.
@@ -49,6 +50,7 @@ differences exist. Some differences are:
 * The timing of the frame rate and piece-drop rate is within a few percent the same.
 * The C, C++, Fortran, Go, Lua, Pascal, PHP, and Scheme Guile versions use GPU textures, so the board can be easily scaled.
     * The Javascript, Perl, Python, Ruby, and Scheme Chickadee versions use bitmaps and are at a fixed size.
+    * The Tcl/TK version does its own scaling.
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
 * The Scheme chickadee version has the y coordinate axis flipped.
