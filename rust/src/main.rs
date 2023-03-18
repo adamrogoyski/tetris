@@ -89,7 +89,7 @@ impl GameContext<'_> {
         .position_centered()
         .build()?;
 
-    let mut ctx = GameContext {
+    Ok(GameContext {
           width,
           height,
           block_size,
@@ -97,10 +97,9 @@ impl GameContext<'_> {
           width_px,
           completed_lines,
           state: State::PLAY,
-          board: Vec::new(),
+          board: vec![vec![0; width as usize]; height as usize],
           current_orientation: 0,
           current_coords: [[0; 2]; 4],
-          //current_coords: [[0, 0], [0, 0], [0, 0], [0, 0]],
           current_piece: thread_rng().sample(Uniform::new(0, NUM_TETROMINOS as u8)),
           next_piece: thread_rng().sample(Uniform::new(0, NUM_TETROMINOS as u8)),
           sound_bwv814menuet: sdl2::mixer::Music::from_file("sound/bwv814menuet.wav").unwrap(),
@@ -110,15 +109,7 @@ impl GameContext<'_> {
           sdl_ctx: sdl_ctx,
           canvas: window.into_canvas().build()?,
           rng: thread_rng(),
-    };
-    ctx.init_board();
-    Ok(ctx)
-  }
-
-  fn init_board(&mut self) {
-    for _ in 1..=self.height as usize {
-      self.board.push(vec![0; self.width as usize]);
-    }
+    })
   }
 
   pub fn add_board_piece(&mut self) -> bool {
