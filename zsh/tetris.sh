@@ -376,15 +376,15 @@ function gameover() {
   echo -ne $'\e'"[$((HEIGHT/2));0H${FRED} The only winning move is not to play"
   echo -ne $'\e'"[$((HEIGHT+13));0H"$'\e'"[39m"$'\e'"[49m"
 
+  declare key=""
   while :; do
     if poll_keyboard; then
-      declare key
-      IFS= read -k${chars} -s key
+      key="${key_buffer}"
       # An escape sequence followed by 2 additional characters could
       # be an arrow key. Otherwise, just treat it as the esc key.
       poll_keyboard 2
       if [[ "${key}" == $'\e' && $? == 0 ]]; then
-        IFS= read -k${chars} -s key
+        key="${key}${key_buffer}"
       fi
       case "${key}" in
         q|$'\e')
