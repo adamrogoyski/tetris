@@ -41,6 +41,7 @@ The following languages are implemented:
     * Guile (Chickadee based on SDL))
 * TCL (TK)
 * Typescript (NodeJS using SDL and Canvas)
+* Zsh (ASCII)
 
 I intend to write more language implementations.
 
@@ -56,10 +57,10 @@ differences exist. Some differences are:
 * The Scheme version uses lists rather than vectors for everything.
 * The Scheme chickadee version has the y coordinate axis flipped.
 * The Javascript versions are written with asynchronous callbacks.
-* The Fortran and Lua version uses arrays indexed starting at 1.
+* The Fortran, Lua, and Zsh version uses arrays indexed starting at 1.
 * The Fortran version uses column-based arrays.
 * The Racket version has limited support for music, and no command-line arguments.
-* The Bash version has no sound.
+* The Bash and Zsh versions have no sound.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
