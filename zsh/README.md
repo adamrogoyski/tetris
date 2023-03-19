@@ -15,10 +15,10 @@ Differences from the [Bash 4 implementation](https://github.com/adamrogoyski/tet
 
 * Requires loading the [zsh/datetime](https://zsh.sourceforge.io/Doc/Release/Zsh-Modules.html#The-zsh_002fdatetime-Module) module
 * Arrays indexed starting from 1 rather than 0
-* Use of ${=var} for [word splitting](https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion)
+* Use of `${=var}` for [word splitting](https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion)
 * Variables cannot be redeclared with declare without outputting to the screen
 * The read builtin parameter -n instead of -k, and there's no way to poll without reading input
-* ${EPOCHREALTIME} has nanosecond resolution rather than millisecond
-* ${status} is a mirror of $? and can't be used, so is renamed ${state}
+* `${EPOCHREALTIME}` has nanosecond resolution rather than millisecond
+* `${status}` is a mirror of `$?` and can't be used, so is renamed `${state}`
 
 ![Tetris gameplay](https://raw.githubusercontent.com/adamrogoyski/tetris/main/screenshots/play-bash.png)
