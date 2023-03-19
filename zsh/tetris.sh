@@ -224,7 +224,8 @@ function rotate() {
   for ((i=1; i <= 4; i++)); do
     declare -i x=$((${new_coords[${i}]%%,*}))
     declare -i y=$((${new_coords[${i}]##*,}))
-    if [[ ${x} -lt 1 || ${x} -gt ${WIDTH} || ${y} -lt 1 || ${y} -gt ${HEIGHT} ]]; then
+    declare xy="${x},${y}"
+    if [[ ${x} -lt 1 || ${x} -gt ${WIDTH} || ${y} -lt 1 || ${y} -gt ${HEIGHT} || "${board[${xy}]}" != "${BLACK}" ]]; then
       set_coords "${COLORS[${current_piece}]}" "${current_coords[@]}"
       return 1
     fi
@@ -354,9 +355,9 @@ TETЯIS:\r
   echo -ne $'\e'"[$((status_height+6));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
 
   # Draw next tetromino.
-  declare -r color="${COLORS[${current_piece}]}"
+  declare -r color="${COLORS[${next_piece}]}"
   declare coord
-  for coord in ${=starting_positions[$((${current_piece}))]}; do
+  for coord in ${=starting_positions[$((${next_piece}))]}; do
     declare -i x=$((${coord%%,*}))
     declare -i y=$((${coord##*,}))
     echo -ne $'\e'"[$((status_height+5+y));$((status_left+5+x*2))H${color}  "
