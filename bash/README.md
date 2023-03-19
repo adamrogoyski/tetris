@@ -1,10 +1,25 @@
 # Bash Tetris.
 
-A pure bash implementation of Tetris using no shelled-out commands other than stty.
+A pure bash 4 or newer implementation of Tetris using no shelled-out commands other than stty.
 
 This version has no music, but otherwise functions the same as other implementations.
 
-Assumes these [escape sequences](https://misc.flogisoft.com/bash/tip_colors_and_formatting) and may
-not work outside of a typical Linux terminal.
+Assumes these [escape sequences](https://misc.flogisoft.com/bash/tip_colors_and_formatting) and a
+supporting terminal.
+
+On Mac OSX that ships with only bash 3, load a newer bash with
+
+```
+# Install Homebrew:
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install Bash:
+$ brew install bash
+
+# Run with homebrew bash:
+$ /opt/homebrew/bin/bash tetris.bash
+```
+
+Bash prior to version 4 doesn't support associative arrays or ${EPOCHREALTIME} which are used.
 
 ![Tetris gameplay](https://raw.githubusercontent.com/adamrogoyski/tetris/main/screenshots/play-bash.png)

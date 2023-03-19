@@ -18,7 +18,7 @@ trap quit SIGTERM
 # Don't echo characters, use raw terminal input, and clear the screen.
 stty -echo raw
 shopt -s checkwinsize
-echo -e "\ec"
+echo -e $'\e'"c"
 
 declare -i completed_lines=0
 if [[ ${#*} -gt 0 ]]; then
@@ -30,17 +30,17 @@ declare -ir HEIGHT=20
 declare -r BLOCK_SIZE="  "
 declare -ir NUM_TETROMINOS=7
 declare -ir FRAME_RATE_MS=$((1000 / 60))
-declare -r FRED='\e[91m'
-declare -r BLACK='\e[40m'
-declare -r BLUE='\e[104m'
-declare -r CYAN='\e[46m'
-declare -r GREEN='\e[102m'
-declare -r LRED='\e[101m'
-declare -r PURPLE='\e[45m'
-declare -r RED='\e[41m'
-declare -r YELLOW='\e[103m'
-declare -r DARK_GRAY='\e[100m'
-declare -r LIGHT_GRAY='\e[47m '
+declare -r FRED=$'\e'"[91m"
+declare -r BLACK=$'\e'"[40m"
+declare -r BLUE=$'\e'"[104m"
+declare -r CYAN=$'\e'"[46m"
+declare -r GREEN=$'\e'"[102m"
+declare -r LRED=$'\e'"[101m"
+declare -r PURPLE=$'\e'"[45m"
+declare -r RED=$'\e'"[41m"
+declare -r YELLOW=$'\e'"[103m"
+declare -r DARK_GRAY=$'\e'"[100m"
+declare -r LIGHT_GRAY=$'\e'"[47m "
 declare -ra COLORS=("${BLUE}" "${CYAN}" "${GREEN}" "${LRED}" "${PURPLE}" "${RED}" "${YELLOW}")
 
 declare -A board=()
@@ -298,7 +298,7 @@ logosml[3]='  *TT   *E       *TT    *R  RR  *II     *S'
 logosml[4]='  *TT   *EEEEE   *TT  *RR   RR  *II  *SSS'
 
 function draw_screen() {
-  echo -ne "\e[1;0H"
+  echo -ne $'\e'"[1;0H"
   # Draw the play board.
   for ((y=1; y <= HEIGHT; y++)) do
     for ((x=1; x <= WIDTH; x++)) do
@@ -306,7 +306,7 @@ function draw_screen() {
     done
     # Draw the wall separating the board and status area.
     echo -ne "${DARK_GRAY} ${LIGHT_GRAY}"
-    echo -e '\e[49m\r'
+    echo -e $'\e'"[49m\r"
   done
   echo -e "${FRED}\r
 \r
@@ -331,26 +331,26 @@ TETЯIS:\r
   if [[ ${status_width} -ge ${logobig_width} ]]; then
     declare -i i
     for ((i=0; i < logobig_height; i++)); do
-      echo -ne "\e[$((i+1));${status_left}H${FRED}${logobig[${i}]}"
+      echo -ne $'\e'"[$((i+1));${status_left}H${FRED}${logobig[${i}]}"
     done
     status_height="$((logobig_height + 2))"
   elif [[ ${status_width} -ge ${logosml_width} ]]; then
     declare -i i
     for ((i=0; i < logosml_height; i++)); do
-      echo -ne "\e[$((i+1));${status_left}H${FRED}${logosml[${i}]}"
+      echo -ne $'\e'"[$((i+1));${status_left}H${FRED}${logosml[${i}]}"
     done
     status_height="$((logosml_height + 2))"
   else
-    echo -ne "\e[1;${status_left}H${FRED} TETRIS"
+    echo -ne $'\e'"[1;${status_left}H${FRED} TETRIS"
   fi
 
   # Draw status elements.
-  echo -ne "\e[${status_height};${status_left}H${FRED} Lines: ${completed_lines}"
-  echo -ne "\e[$((status_height+2));${status_left}H${FRED} Level: $((completed_lines / 3))"
+  echo -ne $'\e'"[${status_height};${status_left}H${FRED} Lines: ${completed_lines}"
+  echo -ne $'\e'"[$((status_height+2));${status_left}H${FRED} Level: $((completed_lines / 3))"
 
   # Clear out previous next tetromino.
-  echo -ne "\e[$((status_height+5));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
-  echo -ne "\e[$((status_height+6));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
+  echo -ne $'\e'"[$((status_height+5));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
+  echo -ne $'\e'"[$((status_height+6));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
 
   # Draw next tetromino.
   declare -r color="${COLORS[${current_piece}]}"
@@ -358,9 +358,9 @@ TETЯIS:\r
   for coord in ${starting_positions[${current_piece}]}; do
     declare -i x=$((${coord%%,*}))
     declare -i y=$((${coord##*,}))
-    echo -ne "\e[$((status_height+5+y));$((status_left+5+x*2))H${color}  "
+    echo -ne $'\e'"[$((status_height+5+y));$((status_left+5+x*2))H${color}  "
   done
-  echo -ne "\e[$((HEIGHT+13));0H\e[39m\e[49m"
+  echo -ne $'\e'"[$((HEIGHT+13));0H"$'\e'"[39m"$'\e'"[49m"
 }
 
 function gameover() {
@@ -369,11 +369,11 @@ function gameover() {
   for ((i=0; i <= WIDTH+8; i++)); do
     line="${line}${BLOCK_SIZE}"
   done
-  echo -ne "\e[$((HEIGHT/2-1));0H${BLACK}${line}"
-  echo -ne "\e[$((HEIGHT/2));0H${BLACK}${line}"
-  echo -ne "\e[$((HEIGHT/2+1));0H${BLACK}${line}"
-  echo -ne "\e[$((HEIGHT/2));0H${FRED} The only winning move is not to play"
-  echo -ne "\e[$((HEIGHT+13));0H\e[39m\e[49m"
+  echo -ne $'\e'"[$((HEIGHT/2-1));0H${BLACK}${line}"
+  echo -ne $'\e'"[$((HEIGHT/2));0H${BLACK}${line}"
+  echo -ne $'\e'"[$((HEIGHT/2+1));0H${BLACK}${line}"
+  echo -ne $'\e'"[$((HEIGHT/2));0H${FRED} The only winning move is not to play"
+  echo -ne $'\e'"[$((HEIGHT+13));0H"$'\e'"[39m"$'\e'"[49m"
 
   while :; do
     if poll_keyboard; then
@@ -396,16 +396,11 @@ function gameover() {
 }
 
 # Append seconds and microseconds, dividing by 1000 to get milliseconds.
-# Fall back to the date command for old versions of bash.
-declare -i start_ms="$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))"
-start_ms=${start_ms:-$(($(date +%s%N)/1000000))}
+declare -i start_ms
+start_ms="$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))"
 function time_ms() {
-  declare -i now_msd
-  if [[ -n "${EPOCHREALTIME}" ]]; then
-    now_ms=$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))
-  else
-    now_ms=$(($(date +%s%N)/1000000))
-  fi
+  declare -i now_ms
+  now_ms=$((${EPOCHREALTIME%%.*}${EPOCHREALTIME##*.} / 1000))
   echo "$((now_ms - start_ms))"
 }
 
