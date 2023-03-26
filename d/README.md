@@ -1,6 +1,6 @@
 # D Tetris
 
-The SDL2 library is used.
+The SDL2 library is used from [bindbc-sdl](https://code.dlang.org/packages/bindbc-sdl).
 
 To build on Debian (bookworm), in the current directory:
 
