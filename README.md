@@ -23,6 +23,7 @@ The following languages are implemented:
 * Bash (ASCII)
 * C (SDL)
 * C++ (SDL)
+* D (SDL)
 * Fortran (SDL)
 * Go (SDL)
 * Javascript
@@ -46,13 +47,11 @@ The following languages are implemented:
 I intend to write more language implementations.
 
 The implementations are meant to function almost identically, though small
-differences exist. Some differences are:
+differees exist. Some differences are:
 
 * Keyboard handling and repeated key presses are close but not identical.
 * The timing of the frame rate and piece-drop rate is within a few percent the same.
-* The C, C++, Fortran, Go, Lua, Pascal, PHP, Rust, and Scheme Guile versions use GPU textures, so the board can be easily scaled.
-    * The Javascript, Perl, Python, Ruby, and Scheme Chickadee versions use bitmaps and are at a fixed size.
-    * The Tcl/TK version does its own scaling.
+* Implementation that can render the PNGs and font text as textures can be resized and scaled.
 * The Scheme version makes unnecessary copies of the board game-state to keep a consistent style.
 * The Scheme version uses lists rather than vectors for everything.
 * The Scheme chickadee version has the y coordinate axis flipped.
@@ -60,7 +59,7 @@ differences exist. Some differences are:
 * The Fortran, Lua, and Zsh version uses arrays indexed starting at 1.
 * The Fortran version uses column-based arrays.
 * The Racket version has limited support for music, and no command-line arguments.
-* The Bash and Zsh versions have no sound.
+* The Bash and Zsh versions have no sound and don't support resizing.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
