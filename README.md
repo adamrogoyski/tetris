@@ -20,6 +20,7 @@ different elements of a program:
 
 The following languages are implemented:
 
+* AWK (ASCII)
 * Bash (ASCII)
 * C (SDL)
 * C++ (SDL)
@@ -59,7 +60,7 @@ differees exist. Some differences are:
 * The Fortran, Lua, and Zsh version uses arrays indexed starting at 1.
 * The Fortran version uses column-based arrays.
 * The Racket version has limited support for music, and no command-line arguments.
-* The Bash and Zsh versions have no sound and don't support resizing.
+* The AWK, Bash, and Zsh versions have no sound and don't support resizing.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.
