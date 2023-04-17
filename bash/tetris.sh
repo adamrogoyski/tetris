@@ -350,8 +350,8 @@ TETЯIS:\r
   echo -ne $'\e'"[$((status_height+2));${status_left}H${FRED} Level: $((completed_lines / 3))"
 
   # Clear out previous next tetromino.
-  echo -ne $'\e'"[$((status_height+5));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
-  echo -ne $'\e'"[$((status_height+6));$((status_left+1))H${color}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
+  echo -ne $'\e'"[$((status_height+5));$((status_left+1))H${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
+  echo -ne $'\e'"[$((status_height+6));$((status_left+1))H${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}${BLOCK_SIZE}"
 
   # Draw next tetromino.
   declare -r color="${COLORS[${next_piece}]}"
