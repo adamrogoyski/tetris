@@ -4,6 +4,7 @@ An AWK implementation of Tetris.
 
 Shells out for functionality not available in AWK:
 
+* Setting the terminal options (stty)
 * obtaining the time in milliseconds (bash4 ${EPOCHREALTIME})
 * polling the keyboard (bash4 read)
 * reading the keyboard (dd)

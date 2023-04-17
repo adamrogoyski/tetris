@@ -6,6 +6,7 @@
 # A tetris game.
 #
 # Shells out for:
+# - setting the terminal options (stty)
 # - obtaining the time in milliseconds
 # - polling the keyboard
 # - reading the keyboard
