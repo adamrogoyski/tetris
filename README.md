@@ -40,8 +40,8 @@ The following languages are implemented:
 * Ruby (SDL)
 * Rust (SDL)
 * Scheme
-    * Guile (SDL))
-    * Guile (Chickadee based on SDL))
+    * Guile (SDL)
+    * Guile (Chickadee based on SDL)
 * TCL (TK)
 * Typescript (NodeJS using SDL and Canvas)
 * Zsh (ASCII)
