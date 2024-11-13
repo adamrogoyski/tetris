@@ -167,7 +167,9 @@ class TetrisCanvas extends Canvas {
 
   void DrawGameOver(Graphics g) {
     // Clear a rectangle for the game-over message and write the message.
+    g.setColor(Color.BLACK);
     g.clearRect(0, (int) (ctx.height_px*0.4375), ctx.width_px, (int) (ctx.height_px*0.125));
+    g.setColor(Color.RED);
     g.drawString("The only winning move is not to play", (int) (ctx.width_px*0.05), (int) (ctx.height_px*0.51));
   }
 
@@ -177,6 +179,7 @@ class TetrisCanvas extends Canvas {
     }
     BufferStrategy buffer = getBufferStrategy();
     Graphics2D g2d = (Graphics2D) buffer.getDrawGraphics();
+    g.setColor(Color.BLACK);
     g2d.clearRect(0, 0, ctx.width_px, ctx.height_px);
     DrawBoard(g2d);
     DrawStatus(g2d);
