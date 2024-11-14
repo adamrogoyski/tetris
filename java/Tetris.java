@@ -118,6 +118,7 @@ class TetrisCanvas extends Canvas {
   Image logo = Toolkit.getDefaultToolkit().getImage("graphics/logo.png");
   Image wall = Toolkit.getDefaultToolkit().getImage("graphics/wall.png");
   Font font;
+  BufferStrategy buffer;
 
   public TetrisCanvas(GameContext ctx) {
     this.ctx = ctx;
@@ -125,7 +126,7 @@ class TetrisCanvas extends Canvas {
     try {
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Montserrat-Regular.ttf")));
-      font = new Font("Montserrat", Font.PLAIN, 76);
+      font = new Font("Montserrat", Font.PLAIN, 24);
     } catch (IOException|FontFormatException e) {
     }
   }
@@ -133,7 +134,7 @@ class TetrisCanvas extends Canvas {
   void DrawBoard(Graphics g) {
     for (int x = 0; x < ctx.width; ++x) {
       for (int y = 0; y < ctx.height; ++y) {
-         g.drawImage(blocks[ctx.board[y][x]], x*ctx.block_size, y*ctx.block_size, (x+1)*ctx.block_size-1, (y+1)*ctx.block_size-1, 0, 0, 32, 32, this);
+         g.drawImage(blocks[ctx.board[y][x]], x*ctx.block_size, y*ctx.block_size, (x+1)*ctx.block_size, (y+1)*ctx.block_size, 0, 0, 32, 32, this);
       }
     }
   }
@@ -173,19 +174,21 @@ class TetrisCanvas extends Canvas {
     g.drawString("The only winning move is not to play", (int) (ctx.width_px*0.05), (int) (ctx.height_px*0.51));
   }
 
-  public void paint(Graphics g) {
+  public void paint(Graphics _g) {
     if (getBufferStrategy() == null) {
       createBufferStrategy(2);
+      buffer = getBufferStrategy();
     }
-    BufferStrategy buffer = getBufferStrategy();
-    Graphics2D g2d = (Graphics2D) buffer.getDrawGraphics();
+    Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
+    g.setBackground(Color.BLACK);
     g.setColor(Color.BLACK);
-    g2d.clearRect(0, 0, ctx.width_px, ctx.height_px);
-    DrawBoard(g2d);
-    DrawStatus(g2d);
+    g.clearRect(0, 0, ctx.width_px, ctx.height_px);
+    DrawBoard(g);
+    DrawStatus(g);
     if (ctx.status == Status.GAMEOVER) {
-      DrawGameOver(g2d);
+      DrawGameOver(g);
     }
+    g.dispose();
     buffer.show();
   }
 
@@ -492,11 +495,12 @@ class TetrisGame {
     canvas.setSize(ctx.width_px, ctx.height_px);
     canvas.setBackground(Color.BLACK);
     canvas.setVisible(true);
-    frame.add(canvas);
-    frame.setSize(ctx.width_px, ctx.height_px + 96);
-    frame.setTitle("TETЯIS");
-    frame.setVisible(true);
     canvas.repaint();
+    frame.add(canvas);
+    frame.setSize(ctx.width_px, ctx.height_px + ctx.block_size);
+    frame.setTitle("TETЯIS");
+    frame.pack();
+    frame.setVisible(true);
     PlayMusic(song_korobeiniki, true);
     GameLoop(rand);
   }
@@ -504,7 +508,7 @@ class TetrisGame {
 
 public class Tetris {
   public static void main(String[] args) throws InterruptedException {
-    GameContext ctx = new GameContext(10, 20, 96, 60);
+    GameContext ctx = new GameContext(10, 20, 32, 60);
     if (args.length > 0) {
       ctx.completed_lines = Math.max(0, Math.min(45, 3 * Integer.parseInt(args[0])));
     }
