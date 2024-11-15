@@ -18,5 +18,5 @@ $ docker build -f java/Dockerfile -t adamrogoyski/tetris-java .
 To run the binary from the docker image to avoid installing the dependencies:
 
 ```
-$ sudo docker run --privileged -it -e DISPLAY=${DISPLAY} -e ${XDG_RUNTIME_DIR} -v ${XDG_RUNTIME_DIR} -v ${XAUTHORITY}:/root/.Xauthority --net=host adamrogoyski/tetris-java ./tetris
+$ sudo docker run --privileged -it -e DISPLAY=${DISPLAY} -e ${XDG_RUNTIME_DIR} -v ${XDG_RUNTIME_DIR} ${XAUTHORITY:+-v ${XAUTHORITY}:/root/.Xauthority} --net=host adamrogoyski/tetris-java java Tetris
 ```
