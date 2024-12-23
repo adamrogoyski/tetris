@@ -159,7 +159,7 @@ class TetrisCanvas extends Canvas {
     // Draw the next tetromino piece.
     for (int i = 0; i < 4; ++i) {
       final int top_border = (int) (ctx.height_px * 0.45);
-      left_border = (ctx.width + 2)*ctx.block_size + 50 + (int) ( 6*ctx.block_size*0.05);
+      left_border = (ctx.width + 2)*ctx.block_size + 50 + (int) (6*ctx.block_size*0.05);
       final int x = left_border + ctx.starting_positions[ctx.next_piece-1][i][0]*ctx.block_size;
       final int y = top_border + ctx.starting_positions[ctx.next_piece-1][i][1]*ctx.block_size;
       g.drawImage(blocks[ctx.next_piece], x, y, x+ctx.block_size, y+ctx.block_size, 0, 0, 32, 32, this);
