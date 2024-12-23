@@ -27,7 +27,8 @@ The following languages are implemented:
 * D (SDL)
 * Fortran (SDL)
 * Go (SDL)
-* Java (AWT)
+* Groovy (JVM AWT)
+* Java (JVM AWT)
 * Javascript
     * NodeJS using SDL and Canvas
     * Web browser with Canvas ([try it](https://www.rogoyski.com/adam/programs/tetris-web/))
