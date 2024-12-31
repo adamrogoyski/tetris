@@ -14,6 +14,7 @@ function quit() {
 trap quit SIGINT
 trap quit SIGQUIT
 trap quit SIGTERM
+trap "echo -e '\ec'" SIGWINCH
 
 # Don't echo characters, use raw terminal input, and clear the screen.
 stty -echo raw
