@@ -24,6 +24,7 @@ The following languages are implemented:
 * Bash (ASCII)
 * C (SDL)
 * C++ (SDL)
+* Common Lisp (SDL)
 * D (SDL)
 * Fortran (SDL)
 * Go (SDL)
