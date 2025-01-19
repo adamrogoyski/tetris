@@ -2,6 +2,12 @@
 
 A csh implementation of Tetris.
 
+Run using the supplied wrapper run.sh:
+
+```sh
+$ ./run.sh
+```
+
 This version has no music, but otherwise functions the same as other implementations.
 
 Assumes these [escape sequences](https://misc.flogisoft.com/bash/tip_colors_and_formatting) and a
