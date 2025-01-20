@@ -25,6 +25,7 @@ The following languages are implemented:
 * C (SDL)
 * C++ (SDL)
 * Common Lisp (SDL)
+* CSH (ASCII)
 * D (SDL)
 * Fortran (SDL)
 * Go (SDL)
@@ -63,7 +64,9 @@ differees exist. Some differences are:
 * The Fortran, Lua, and Zsh version uses arrays indexed starting at 1.
 * The Fortran version uses column-based arrays.
 * The Racket version has limited support for music, and no command-line arguments.
-* The AWK, Bash, and Zsh versions have no sound and don't support resizing.
+* The AWK, Bash, CSH and Zsh versions have no sound
+  * A linux-pulseaudio-only Bash version has auto-generated music
+* The AWK and CSH versions don't support resizing.
 
 The music is performed by me on guitar. They should be close to note-for-note identical to the
 three Nintendo Gameboy Tetris songs.

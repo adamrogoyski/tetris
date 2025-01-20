@@ -2,7 +2,10 @@
 
 A pure bash 4 or newer implementation of Tetris using no shelled-out commands other than stty.
 
-This version has no music, but otherwise functions the same as other implementations.
+The game functions the same as other implementations other than the graphics and sound.
+
+There is a version with no music (_tetris.sh_) that is more portable. The version with music
+(_tetris-with-music.sh_) has ony been tested on Linux with pulseaudio.
 
 Assumes these [escape sequences](https://misc.flogisoft.com/bash/tip_colors_and_formatting) and a
 supporting terminal.
